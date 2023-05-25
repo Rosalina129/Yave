@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Yave.Skill;
 
 namespace Yave
 {
@@ -33,10 +34,18 @@ namespace Yave
         public double XP { get; set; }
         public double MaxHP { get; set; }
         public int ElementID { get; set; }
+        public List<Skill.Skill> Skill { get; set; }
+        public List<Buff> Buffs { get; set; }
 
         //Prop
         public bool isAlive { get; set; }
 
+        //Base Datas.
+        private double baseMaxHealth;
+        private double baseAttack;
+        private double baseDefense;
+        private double baseCritRate;
+        private double baseCritDamage;
 
         public Character()
         {
@@ -50,7 +59,15 @@ namespace Yave
             XP = 0;
             MaxHP = 100;
             ElementID = 0;
+            Skill = new List<Skill.Skill>();
+            Buffs = new List<Buff>();
             isAlive = true;
+
+            baseMaxHealth = this.MaxHealth;
+            baseAttack = this.Attack;
+            baseDefense = this.Defense;
+            baseCritRate = this.Crit_Rate;
+            baseCritDamage = this.Crit_Damage;
         }
 
 
@@ -90,7 +107,10 @@ namespace Yave
             else
                 return true;
         }
+        private void BuffCalculate()
+        {
 
+        }
         //Trans String Datas
 
         /// <summary>
@@ -125,13 +145,23 @@ namespace Yave
             CheckHealth();
         }
 
-        public void TakeDamage(double ATKValue)
+        public double TakeElementDamage(double ATKValue, double critRate, double critDamage, int elementA, int elementB, bool isAntiDefense = false)
         {
-            Health -= ATKValue;
+            double a = 0.0;
+            if (isAntiDefense)
+            {
+                a = Math.Round(ThreadSystem.CalculateDamage(ATKValue, 0, critRate, critDamage, 0, elementA, elementB), 0);
+            }
+            else
+            {
+                a = Math.Round(ThreadSystem.CalculateDamage(ATKValue, Defense, critRate, critDamage, 0, elementA, elementB), 0);
+            }
+            Health -= a <= 1 ? 1 : a;
             if (!CheckHealth())
             {
                 isAlive = false;
             }
+            return a;
         }
 
         public void AddXP(double xp)
@@ -143,7 +173,7 @@ namespace Yave
         public void Heal()
         {
             Health = MaxHealth;
-            CheckHealth();
+            isAlive = CheckHealth();
         }
 
     }
@@ -160,8 +190,13 @@ namespace Yave
         public double Resistance;
         public int ElementID;
         public bool isAlive { get; set; }
+        public List<Skill.Skill> Skill { get; set; }
 
-        public Monster(string name, double health, double attack, double defense, double resistance, int elementID)
+        private double baseMaxHealth;
+        private double baseAttack;
+        private double baseDefense;
+
+        public Monster(string name, double health, double attack, double defense, double resistance, int elementID, List<Skill.Skill> skill)
         {
             Name = name;
             Health = health;
@@ -171,6 +206,11 @@ namespace Yave
             Resistance = resistance;
             ElementID = elementID;
             isAlive= true;
+            Skill = skill;
+
+            baseMaxHealth = MaxHealth;
+            baseAttack = attack;
+            baseDefense = defense;
         }
 
         private bool CheckHealth()
@@ -193,23 +233,31 @@ namespace Yave
             CheckHealth();
         }
 
-        public void TakeElementDamage(double ATKValue, int elementID)
+        public double TakeElementDamage(double ATKValue, double critRate, double critDamage, int elementA, int elementB)
         {
-
-        }
-
-        public void TakeDamage(double ATKValue, double critRate, double critDamage)
-        {
-            Health -= ThreadSystem.CalculateDamage(ATKValue, Defense,critRate,critDamage,Resistance);
+            double a = Math.Round(ThreadSystem.CalculateDamage(ATKValue, Defense, critRate, critDamage, Resistance,elementA,elementB), 0);
+            Health -= a <= 1 ? 1 : a;
             if (!CheckHealth())
             {
                 isAlive = false;
             }
+            return a;
+        }
+
+        public double TakeDamage(double ATKValue, double critRate, double critDamage)
+        {
+            double a = Math.Round(ThreadSystem.CalculateDamage(ATKValue, Defense, critRate, critDamage, Resistance),0);
+            Health -= a <= 1 ? 1 : a;
+            if (!CheckHealth())
+            {
+                isAlive = false;
+            }
+            return a;
         }
 
         public string GetHealth()
         {
-            return $"{Math.Round(Health,0)}/{Math.Round(MaxHealth,0)}";
+            return $"{ThreadSystem.ConvertPercent(Health / MaxHealth)}";
         }
 
         public string GetMonsterName()
@@ -226,40 +274,356 @@ namespace Yave
     public class MonsterPool
     {
         private List<Monster> monsters;
-
+        MonsterSkillPool monsterSkillPool = new MonsterSkillPool();
         public MonsterPool(int Difficulty)
         {
             monsters = new List<Monster>
             {
-                new Monster("Slime", ThreadSystem.Difficulty_Control(150, Difficulty), ThreadSystem.Difficulty_Control(4, Difficulty),ThreadSystem.Difficulty_Control(0,Difficulty),0,(int)ElementName.Physical),
-                new Monster("Spider", ThreadSystem.Difficulty_Control(12, Difficulty), ThreadSystem.Difficulty_Control(5, Difficulty), ThreadSystem.Difficulty_Control(3, Difficulty), 0.01, (int)ElementName.Grass),
-                new Monster("Bat", ThreadSystem.Difficulty_Control(6, Difficulty), ThreadSystem.Difficulty_Control(7, Difficulty), ThreadSystem.Difficulty_Control(1, Difficulty), 0, (int)ElementName.Shadow),
-                new Monster("Cockroach", ThreadSystem.Difficulty_Control(12, Difficulty), ThreadSystem.Difficulty_Control(3, Difficulty), ThreadSystem.Difficulty_Control(1, Difficulty), 0.02, (int)ElementName.Grass),
-                new Monster("Mosquito", ThreadSystem.Difficulty_Control(15, Difficulty), ThreadSystem.Difficulty_Control(3, Difficulty), ThreadSystem.Difficulty_Control(0, Difficulty), 0, (int)ElementName.Grass),
-                new Monster("Ice Slime", ThreadSystem.Difficulty_Control(30, Difficulty), ThreadSystem.Difficulty_Control(8, Difficulty), ThreadSystem.Difficulty_Control(6, Difficulty), 0.03, (int)ElementName.Ice),
-                new Monster("Fire Slime", ThreadSystem.Difficulty_Control(30, Difficulty), ThreadSystem.Difficulty_Control(9, Difficulty), ThreadSystem.Difficulty_Control(2, Difficulty), 0.03, (int)ElementName.Fire)
+                // Region 1 Monsters
+                // Tier 1
+                new Monster(
+                    "Slime",
+                    ThreadSystem.Difficulty_Control(132,Difficulty),
+                    ThreadSystem.Difficulty_Control(18,Difficulty),
+                    ThreadSystem.Difficulty_Control(10,Difficulty),
+                    0,
+                    (int)ElementName.Grass,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill()
+                    }
+                ),
+                new Monster(
+                    "Red Slime",
+                    ThreadSystem.Difficulty_Control(169,Difficulty),
+                    ThreadSystem.Difficulty_Control(25,Difficulty),
+                    ThreadSystem.Difficulty_Control(12,Difficulty),
+                    0,
+                    (int)ElementName.Physical,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(1)
+                    }
+                ),
+                new Monster(
+                    "Orange Slime",
+                    ThreadSystem.Difficulty_Control(148,Difficulty),
+                    ThreadSystem.Difficulty_Control(30,Difficulty),
+                    ThreadSystem.Difficulty_Control(7,Difficulty),
+                    0,
+                    (int)ElementName.Fire,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                    }
+                ),
+                new Monster(
+                    "Yellow Slime",
+                    ThreadSystem.Difficulty_Control(163,Difficulty),
+                    ThreadSystem.Difficulty_Control(38,Difficulty),
+                    ThreadSystem.Difficulty_Control(12,Difficulty),
+                    0,
+                    (int)ElementName.Lumine,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(2)
+                    }
+                ),
+                new Monster(
+                    "Green Slime",
+                    ThreadSystem.Difficulty_Control(172,Difficulty),
+                    ThreadSystem.Difficulty_Control(38,Difficulty),
+                    ThreadSystem.Difficulty_Control(13,Difficulty),
+                    0,
+                    (int)ElementName.Grass,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(3)
+                    }
+                ),
+                new Monster(
+                    "Cyan Slime",
+                    ThreadSystem.Difficulty_Control(210,Difficulty),
+                    ThreadSystem.Difficulty_Control(20,Difficulty),
+                    ThreadSystem.Difficulty_Control(19,Difficulty),
+                    0,
+                    (int)ElementName.Ice,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(4)
+                    }
+                ),
+                new Monster(
+                    "Blue Slime",
+                    ThreadSystem.Difficulty_Control(289,Difficulty),
+                    ThreadSystem.Difficulty_Control(18,Difficulty),
+                    ThreadSystem.Difficulty_Control(12,Difficulty),
+                    0,
+                    (int)ElementName.Water,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(1),
+                        MonsterSkillPool.GetSkill(5)
+                    }
+                ),
+                new Monster(
+                    "Purple Slime",
+                    ThreadSystem.Difficulty_Control(230,Difficulty),
+                    ThreadSystem.Difficulty_Control(23,Difficulty),
+                    ThreadSystem.Difficulty_Control(19,Difficulty),
+                    0,
+                    (int)ElementName.Shadow,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(1),
+                        MonsterSkillPool.GetSkill(5)
+                    }
+                ),
+                new Monster(
+                    "Black Slime",
+                    ThreadSystem.Difficulty_Control(245,Difficulty),
+                    ThreadSystem.Difficulty_Control(23,Difficulty),
+                    ThreadSystem.Difficulty_Control(20,Difficulty),
+                    0,
+                    (int)ElementName.Void,
+                    new List<Skill.Skill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(3),
+                        MonsterSkillPool.GetSkill(6)
+                    }
+                ),
             };
         }
 
-        public Monster GetRandomMonster()
+        public Monster GetMonster(int index)
         {
-            Random random = new Random();
-            int index = random.Next(monsters.Count);
             return monsters[index];
         }
     }
 
+    //Player Skill Pool Start
+    public class PlayerSkillPool
+    {
+        private static List<Skill.Skill> skills;
+
+        public PlayerSkillPool()
+        {
+            skills = new List<Skill.Skill>
+            {
+                new Skill.Skill(
+                0,
+                1,
+                "给你一拳",
+                new string[] {
+                    "对敌方造成普通伤害。",
+                    "对敌方造成相当于自身攻击力 {0} 的伤害。"
+                },
+                new double[]
+                    {
+                        0.55,
+                        0.65,
+                        0.75,
+                        0.88,
+                        1,
+                        1.12,
+                        1.18,
+                        1.25,
+                        1.32,
+                        1.39,
+                        1.44,
+                        1.49
+                    },
+                new string[]
+                    {
+                "Attack"
+                    }
+                )
+            };
+        }
+
+        public static Skill.Skill GetSkill(int ID = 0)
+        {
+            return skills[ID];
+        }
+
+        public static Skill.Skill SkillLevelUP(int ID)
+        {
+            skills[ID].Level += 1;
+            return skills[ID];
+        }
+    }
+    //Player Skill Pool End
+    //Monster Skill Pool Start
+    public class MonsterSkillPool
+    {
+        private static List<Skill.Skill> skills = null;
+
+        public MonsterSkillPool()
+        {
+            skills = new List<Skill.Skill>
+            {
+                new Skill.Skill
+                (
+                    0,
+                    1,
+                    "撞击",
+                    new string[] {
+                        "对敌人造成部分伤害。",
+                        "对敌方造成相当于自身攻击力 {0} 的伤害。"
+                    },
+                    new double[] {0.9},
+                    new string[] { "Attack" }
+                ),
+                new Skill.Skill
+                (
+                    1,
+                    1,
+                    "重击",
+                    new string[] {
+                        "对敌人造成大量伤害。",
+                        "对敌方造成致命一击，攻击力相当于自身的 {0}。"
+                    },
+                    new double[] { 1.35 },
+                    new string[] {"Attack"}
+                ),
+                new Skill.Skill
+                (
+                    2,
+                    1,
+                    "连续撞击",
+                    new string[] {
+                        "对敌人造成少量的连续伤害。",
+                        "对敌方分别造成自身攻击力 {0},{1} 的伤害。"
+                    },
+                    new double[] {0.52,0.76},
+                    new string[] {"Attack", "Chain" }
+                ),
+                new Skill.Skill
+                (
+                    3,
+                    1,
+                    "破甲撞击",
+                    new string[] {
+                        "无视敌人的防御力，直接对敌人造成少量伤害。",
+                        "无视敌人的防御力，对敌方造成自身攻击力 {0} 的伤害。"
+                    },
+                    new double[] {0.7},
+                    new string[] {"Attack", "Armour Penetration" }
+                ),
+                new Skill.Skill
+                (
+                    4,
+                    1,
+                    "生命吸收",
+                    new string[] {
+                        "对敌人造成少量伤害的同时，吸收造成的伤害为治疗的生命值。",
+                        "对敌方造成自身攻击力 {0} 的伤害，同时治疗自身，回复量相当于此次造成的伤害值。"
+                    },
+                    new double[] {0.5},
+                    new string[] {"Attack", "Health" }
+                ),
+                new Skill.Skill
+                (
+                    5,
+                    1,
+                    "铁心",
+                    new string[] {
+                        "提升自身的防御值",
+                        ""
+                    },
+                    new double[] { 0.13 },
+                    new string[] {"Defense", "Shield", "Buff" }
+                ),
+                new Skill.Skill
+                (
+                    6,
+                    1,
+                    "荆棘",
+                    new string[] {
+                        "当敌人对你造成伤害，对方同时也造成少量伤害。",
+                        ""
+                    },
+                    new double[] { 0.13 },
+                    new string[] {"Defense"}
+                ),
+                new Skill.Skill
+                (
+                    7,
+                    1,
+                    "『史莱姆领域』",
+                    new string[] {
+                        "提升自己的攻击力。",
+                        ""
+                    },
+                    new double[] { 0.75 },
+                    new string[] {"Attack", "Buff" }
+                ),
+                new Skill.Skill
+                (
+                    8,
+                    1,
+                    "『削弱之力』",
+                    new string[] {
+                        "对敌方造成中量伤害，并且削减对方的防御值。",
+                        ""
+                    },
+                    new double[] {0.8,0.2},
+                    new string[] {"Defense"}
+                ),
+                new Skill.Skill
+                (
+                    9,
+                    1,
+                    "『自爆程序启动』",
+                    new string[] {
+                        "冷却5个回合，结束会自爆，对敌人造成超量伤害。",
+                        ""
+                    },
+                    new double[] {4.5},
+                    new string[] {"Defense"}
+                ),
+                new Skill.Skill
+                (
+                    10,
+                    1,
+                    "超级史莱姆",
+                    new string[] {
+                        "大量提升自己的攻击力，防御力。",
+                        ""
+                    },
+                    new double[] {7.18},
+                    new string[] {"Defense"}
+                ),
+                new Skill.Skill
+                (
+                    11,
+                    1,
+                    "天降史莱姆！",
+                    new string[] {
+                        "对地方造成大量伤害，同时提升自己的攻击力。",
+                        ""
+                    },
+                    new double[] {4.23,0.85},
+                    new string[] {"Defense"}
+                ),
+            };
+        }
+
+        public static Skill.Skill GetSkill(int ID = 0)
+        {
+            return skills[ID];
+        }
+    }
+    //Monster Skill Pool End
     //Basic Class Start
     //Basic Class End
-
-    //Skill Class Start
-    public class Skill
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
-    //Skill Class End
 
     //Items Class Start
     public class Items
@@ -270,7 +634,27 @@ namespace Yave
     }
     //Items Class End
 
+    //Buff Class Start
+    public class Buff
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public double Values { get; set; }
+        public bool Relative { get; set; }
+        public int Cycles { get; set; }
+        public string[] Tags { get; set; }
 
+        public Buff(int id, string name, double values, bool relative, int cycles, string[] tags)
+        {
+            ID = id;
+            Name = name;
+            Values = values;
+            Relative = relative;
+            Cycles = cycles;
+            Tags = tags;
+        }
+    }
+    //Buff Class End
 
     internal static class Program
     {
@@ -311,7 +695,7 @@ namespace Yave
                     Multiply = 0.5;
                     break;
             }
-            return value * Multiply;
+            return value * Multiply * ((Main.TalentLevel + 1) * (Main.TalentLevel + 1) * 0.25);
         }
         public static string ConvertPercent(double percent)
         {
@@ -323,17 +707,16 @@ namespace Yave
             return Elements.strings[elementID];
         }
 
-        public static double CalculateDamage(double Attack, double Defense, double critRate, double critDamage, double resistance)
+        public static double CalculateDamage(double Attack, double Defense, double critRate, double critDamage, double resistance, int elementA = 0, int elementB = 0)
         {
             Random r1 = new Random();
             Thread.Sleep(1);
             double c;
             c = r1.NextDouble();
-            double DefenseInv = 1 - 1 / (1 + Defense / 10);
             if (c >= 1 - critRate)
-                return Attack * (1 - DefenseInv) * (1 + critDamage) * (1 - resistance);
+                return (Attack * Attack / (Attack + Defense)) * (1 + critDamage) * (1 - resistance) * GetElementRates(elementA, elementB);
             else
-                return Attack * (1 - DefenseInv) * (1 - resistance);
+                return (Attack * Attack / (Attack + Defense)) * (1 - resistance) * GetElementRates(elementA,elementB);
         }
 
         public static string GetDistance(double distance)
@@ -342,6 +725,69 @@ namespace Yave
             if (distance > 1000000)
                 unit = "km";
             return $"{Math.Round((distance > 100000 ? distance / 100000 : distance/100), 2)} {unit}";
+        }
+
+        public static double GetElementRates(int elementA, int elementB)
+        {
+            return Elements.Values[elementA,elementB];
+        }
+
+        public static double UseSkill(int ID, Character player, Monster monster, bool source, out string log)
+        {
+            double damageTotal = 0.0;
+            log = "";
+            if (source) //Player Use
+            {
+                log += $"{player.Name} 使用了 {player.Skill[ID].Name}.\r\n";
+                switch (player.Skill[ID].SkillID)
+                {
+                    case 0:
+                        damageTotal += monster.TakeElementDamage(player.Skill[0].Value[player.Skill[0].Level-1] * player.Attack, player.Crit_Rate, player.Crit_Damage, player.ElementID, monster.ElementID);
+                        log += $"敌方受到了 {damageTotal} 点伤害\r\n";
+                        break;
+                }
+            }
+            else
+            {
+                log += $"{monster.Name} 使用了 {monster.Skill[ID].Name}.\r\n";
+                switch (monster.Skill[ID].SkillID)
+                {
+                    case 0:
+                    case 1:
+                        damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
+                        log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                        break;
+                    case 2:
+                        for (int a = 0; a < monster.Skill[ID].Value.Length; a++)
+                        {
+                            damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[a] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
+                            log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                        }
+                        break;
+                    case 3:
+                        damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID,true);
+                        log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                        break;
+                    case 4:
+                        damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
+                        log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                        monster.Health += monster.Skill[ID].Value[0] * damageTotal;
+                        log += $"敌方回复了 {damageTotal} HP\r\n";
+                        break;
+                    case 5:
+
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    case 8:
+                        break;
+                    case 9:
+                        break;
+                }
+            }
+            return damageTotal;
         }
     }
 }

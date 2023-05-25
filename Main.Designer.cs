@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.filesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +50,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tourTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button8 = new System.Windows.Forms.Button();
             this.energylabel = new System.Windows.Forms.Label();
             this.cdlabel = new System.Windows.Forms.Label();
             this.crlabel = new System.Windows.Forms.Label();
@@ -72,16 +74,16 @@
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button6 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.tourdislabel = new System.Windows.Forms.Label();
+            this.totalDamagelabel = new System.Windows.Forms.Label();
             this.monsterpanel = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button7 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -89,6 +91,7 @@
             this.combatLog = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.monsterSkillsListBox = new System.Windows.Forms.ListBox();
             this.monreslabel = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.mondeflabel = new System.Windows.Forms.Label();
@@ -98,11 +101,21 @@
             this.monhealthlabel = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.monnamelabel = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.button6 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tourdislabel = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Values = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Buffs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.label8 = new System.Windows.Forms.Label();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.elementToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -114,6 +127,9 @@
             this.tabPage1.SuspendLayout();
             this.monsterpanel.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -139,71 +155,72 @@
             this.saveAsToolStripMenuItem,
             this.toolStripSeparator1});
             this.filesToolStripMenuItem.Name = "filesToolStripMenuItem";
-            this.filesToolStripMenuItem.Size = new System.Drawing.Size(42, 20);
-            this.filesToolStripMenuItem.Text = "Files";
+            this.filesToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.filesToolStripMenuItem.Text = "文件";
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.newToolStripMenuItem.Text = "New...";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.newToolStripMenuItem.Text = "新建...";
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.loadToolStripMenuItem.Text = "Load...";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.loadToolStripMenuItem.Text = "加载...";
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.saveToolStripMenuItem.Text = "Save...";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.saveToolStripMenuItem.Text = "保存...";
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.saveAsToolStripMenuItem.Text = "另存为...";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(119, 6);
             // 
             // infoToolStripMenuItem
             // 
             this.infoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.elementRatesToolStripMenuItem});
             this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
-            this.infoToolStripMenuItem.Text = "Info";
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.infoToolStripMenuItem.Text = "信息";
             // 
             // elementRatesToolStripMenuItem
             // 
             this.elementRatesToolStripMenuItem.Name = "elementRatesToolStripMenuItem";
-            this.elementRatesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.elementRatesToolStripMenuItem.Text = "Element Rates";
+            this.elementRatesToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.elementRatesToolStripMenuItem.Text = "元素倍率";
             // 
             // eXPToolStripMenuItem
             // 
             this.eXPToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dashboardToolStripMenuItem});
             this.eXPToolStripMenuItem.Name = "eXPToolStripMenuItem";
-            this.eXPToolStripMenuItem.Size = new System.Drawing.Size(88, 20);
-            this.eXPToolStripMenuItem.Text = "Experimental";
+            this.eXPToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.eXPToolStripMenuItem.Text = "实验性";
             // 
             // dashboardToolStripMenuItem
             // 
             this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
-            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.dashboardToolStripMenuItem.Text = "Dashboard";
+            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.dashboardToolStripMenuItem.Text = "仪表板";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.aboutToolStripMenuItem.Text = "关于";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -231,7 +248,7 @@
             // xplabel
             // 
             this.xplabel.AutoSize = true;
-            this.xplabel.Location = new System.Drawing.Point(41, 52);
+            this.xplabel.Location = new System.Drawing.Point(41, 48);
             this.xplabel.Name = "xplabel";
             this.xplabel.Size = new System.Drawing.Size(24, 15);
             this.xplabel.TabIndex = 3;
@@ -255,6 +272,7 @@
             this.charNamelabel.Size = new System.Drawing.Size(58, 15);
             this.charNamelabel.TabIndex = 1;
             this.charNamelabel.Text = "Character";
+            this.charNamelabel.MouseHover += new System.EventHandler(this.Element_Details);
             // 
             // pictureBox1
             // 
@@ -271,6 +289,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.button8);
             this.groupBox1.Controls.Add(this.energylabel);
             this.groupBox1.Controls.Add(this.cdlabel);
             this.groupBox1.Controls.Add(this.crlabel);
@@ -286,10 +305,19 @@
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.groupBox1.Location = new System.Drawing.Point(12, 108);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(231, 149);
+            this.groupBox1.Size = new System.Drawing.Size(231, 171);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Properties";
+            this.groupBox1.Text = "属性";
+            // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(5, 142);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(85, 23);
+            this.button8.TabIndex = 16;
+            this.button8.Text = "更多信息...";
+            this.button8.UseVisualStyleBackColor = true;
             // 
             // energylabel
             // 
@@ -350,74 +378,75 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(6, 124);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(73, 15);
+            this.label6.Size = new System.Drawing.Size(59, 15);
             this.label6.TabIndex = 8;
-            this.label6.Text = "Crit Damage";
+            this.label6.Text = "暴击伤害";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(6, 104);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 15);
+            this.label5.Size = new System.Drawing.Size(46, 15);
             this.label5.TabIndex = 7;
-            this.label5.Text = "Crit Rate";
+            this.label5.Text = "暴击率";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(6, 84);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(43, 15);
+            this.label4.Size = new System.Drawing.Size(33, 15);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Energy";
+            this.label4.Text = "能量";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(6, 64);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 15);
+            this.label3.Size = new System.Drawing.Size(33, 15);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Defense";
+            this.label3.Text = "防御";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 44);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 15);
+            this.label2.Size = new System.Drawing.Size(33, 15);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Attack";
+            this.label2.Text = "攻击";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 15);
+            this.label1.Size = new System.Drawing.Size(46, 15);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Health";
+            this.label1.Text = "生命值";
             // 
             // groupBox2
             // 
-            this.groupBox2.Location = new System.Drawing.Point(12, 264);
+            this.groupBox2.Location = new System.Drawing.Point(12, 285);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(231, 324);
+            this.groupBox2.Size = new System.Drawing.Size(231, 303);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Basic / Skills";
+            this.groupBox2.Text = "基础天赋 / 技能";
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.panel2);
+            this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Location = new System.Drawing.Point(249, 27);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(464, 186);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Location";
+            this.groupBox3.Text = "地区";
             // 
             // panel2
             // 
@@ -434,6 +463,7 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(449, 143);
             this.panel2.TabIndex = 1;
+            this.panel2.Visible = false;
             // 
             // radioButton8
             // 
@@ -443,7 +473,7 @@
             this.radioButton8.Name = "radioButton8";
             this.radioButton8.Size = new System.Drawing.Size(432, 19);
             this.radioButton8.TabIndex = 7;
-            this.radioButton8.Text = "Deepevil Volcano";
+            this.radioButton8.Text = "深恶火山";
             this.radioButton8.UseVisualStyleBackColor = true;
             // 
             // radioButton7
@@ -454,7 +484,7 @@
             this.radioButton7.Name = "radioButton7";
             this.radioButton7.Size = new System.Drawing.Size(432, 19);
             this.radioButton7.TabIndex = 6;
-            this.radioButton7.Text = "Shangri-La";
+            this.radioButton7.Text = "世外桃源";
             this.radioButton7.UseVisualStyleBackColor = true;
             // 
             // radioButton6
@@ -465,7 +495,7 @@
             this.radioButton6.Name = "radioButton6";
             this.radioButton6.Size = new System.Drawing.Size(432, 19);
             this.radioButton6.TabIndex = 5;
-            this.radioButton6.Text = "Karst Cave Mine";
+            this.radioButton6.Text = "溶洞矿场";
             this.radioButton6.UseVisualStyleBackColor = true;
             // 
             // radioButton5
@@ -476,7 +506,7 @@
             this.radioButton5.Name = "radioButton5";
             this.radioButton5.Size = new System.Drawing.Size(432, 19);
             this.radioButton5.TabIndex = 4;
-            this.radioButton5.Text = "Harmonic Dark Valley";
+            this.radioButton5.Text = "谐波暗谷";
             this.radioButton5.UseVisualStyleBackColor = true;
             // 
             // radioButton4
@@ -487,7 +517,7 @@
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(432, 19);
             this.radioButton4.TabIndex = 3;
-            this.radioButton4.Text = "Dolphin Shore";
+            this.radioButton4.Text = "海豚湾";
             this.radioButton4.UseVisualStyleBackColor = true;
             // 
             // radioButton3
@@ -498,7 +528,7 @@
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(432, 19);
             this.radioButton3.TabIndex = 2;
-            this.radioButton3.Text = "Frostmelt Snow Mountain";
+            this.radioButton3.Text = "霜融雪山";
             this.radioButton3.UseVisualStyleBackColor = true;
             // 
             // radioButton2
@@ -509,7 +539,7 @@
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(432, 19);
             this.radioButton2.TabIndex = 1;
-            this.radioButton2.Text = "Drip Forest";
+            this.radioButton2.Text = "滴水森林";
             this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // radioButton1
@@ -522,17 +552,26 @@
             this.radioButton1.Size = new System.Drawing.Size(432, 19);
             this.radioButton1.TabIndex = 0;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Emerald Plains";
+            this.radioButton1.Text = "绿宝石平原";
             this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(189, 94);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(89, 15);
+            this.label10.TabIndex = 1;
+            this.label10.Text = "Coming Soon...";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 19);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(104, 15);
+            this.label7.Size = new System.Drawing.Size(129, 15);
             this.label7.TabIndex = 0;
-            this.label7.Text = "Current: Unknown";
+            this.label7.Text = "当前所在地: Unknown";
             // 
             // timer1
             // 
@@ -548,7 +587,7 @@
             this.groupBox4.Size = new System.Drawing.Size(464, 370);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Workspace";
+            this.groupBox4.Text = "工作区";
             // 
             // tabControl1
             // 
@@ -565,6 +604,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.totalDamagelabel);
             this.tabPage1.Controls.Add(this.monsterpanel);
             this.tabPage1.Controls.Add(this.label8);
             this.tabPage1.Controls.Add(this.button6);
@@ -575,37 +615,17 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(441, 314);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tour";
+            this.tabPage1.Text = "旅行";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // totalDamagelabel
             // 
-            this.button6.Location = new System.Drawing.Point(360, 289);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 3;
-            this.button6.Text = "Go";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(269, 291);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(85, 19);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Auto Battle";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // tourdislabel
-            // 
-            this.tourdislabel.AutoSize = true;
-            this.tourdislabel.Location = new System.Drawing.Point(6, 292);
-            this.tourdislabel.Name = "tourdislabel";
-            this.tourdislabel.Size = new System.Drawing.Size(101, 15);
-            this.tourdislabel.TabIndex = 1;
-            this.tourdislabel.Text = "Tour Distance: 0m";
+            this.totalDamagelabel.AutoSize = true;
+            this.totalDamagelabel.Location = new System.Drawing.Point(6, 3);
+            this.totalDamagelabel.Name = "totalDamagelabel";
+            this.totalDamagelabel.Size = new System.Drawing.Size(62, 15);
+            this.totalDamagelabel.TabIndex = 5;
+            this.totalDamagelabel.Text = "共计伤害 ";
             // 
             // monsterpanel
             // 
@@ -622,91 +642,114 @@
             this.monsterpanel.Controls.Add(this.monhealthlabel);
             this.monsterpanel.Controls.Add(this.label9);
             this.monsterpanel.Controls.Add(this.monnamelabel);
-            this.monsterpanel.Location = new System.Drawing.Point(6, 3);
+            this.monsterpanel.Location = new System.Drawing.Point(6, 21);
             this.monsterpanel.Name = "monsterpanel";
-            this.monsterpanel.Size = new System.Drawing.Size(429, 283);
+            this.monsterpanel.Size = new System.Drawing.Size(429, 264);
             this.monsterpanel.TabIndex = 0;
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.button7);
             this.panel3.Controls.Add(this.button5);
             this.panel3.Controls.Add(this.button4);
             this.panel3.Controls.Add(this.button3);
             this.panel3.Controls.Add(this.button2);
             this.panel3.Controls.Add(this.combatLog);
-            this.panel3.Location = new System.Drawing.Point(220, 3);
+            this.panel3.Location = new System.Drawing.Point(220, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(202, 275);
+            this.panel3.Size = new System.Drawing.Size(202, 257);
             this.panel3.TabIndex = 11;
+            // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(151, 201);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(48, 23);
+            this.button7.TabIndex = 3;
+            this.button7.Text = "技能2";
+            this.button7.UseVisualStyleBackColor = true;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(101, 248);
+            this.button5.Location = new System.Drawing.Point(101, 230);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(98, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "Run";
+            this.button5.TabIndex = 5;
+            this.button5.Text = "逃跑";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(3, 248);
+            this.button4.Location = new System.Drawing.Point(3, 230);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(92, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "Block";
+            this.button4.TabIndex = 4;
+            this.button4.Text = "格挡";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(101, 219);
+            this.button3.Location = new System.Drawing.Point(101, 201);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(98, 23);
+            this.button3.Size = new System.Drawing.Size(49, 23);
             this.button3.TabIndex = 2;
-            this.button3.Text = "Ele.Attack";
+            this.button3.Text = "技能1";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(3, 219);
+            this.button2.Location = new System.Drawing.Point(3, 201);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(92, 23);
             this.button2.TabIndex = 1;
-            this.button2.Text = "Attack";
+            this.button2.Text = "攻击";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // combatLog
             // 
-            this.combatLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.combatLog.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.combatLog.Location = new System.Drawing.Point(3, 3);
             this.combatLog.MaxLength = 2147483647;
             this.combatLog.Multiline = true;
             this.combatLog.Name = "combatLog";
             this.combatLog.ReadOnly = true;
-            this.combatLog.Size = new System.Drawing.Size(196, 210);
+            this.combatLog.Size = new System.Drawing.Size(196, 192);
             this.combatLog.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(136, 255);
+            this.button1.Location = new System.Drawing.Point(136, 236);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
-            this.button1.Text = "Details";
+            this.button1.Text = "更多...";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // groupBox5
             // 
-            this.groupBox5.Location = new System.Drawing.Point(11, 112);
+            this.groupBox5.Controls.Add(this.monsterSkillsListBox);
+            this.groupBox5.Location = new System.Drawing.Point(11, 121);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(200, 139);
+            this.groupBox5.Size = new System.Drawing.Size(200, 109);
             this.groupBox5.TabIndex = 9;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Skills";
+            this.groupBox5.Text = "技能";
+            // 
+            // monsterSkillsListBox
+            // 
+            this.monsterSkillsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.monsterSkillsListBox.FormattingEnabled = true;
+            this.monsterSkillsListBox.ItemHeight = 15;
+            this.monsterSkillsListBox.Location = new System.Drawing.Point(3, 19);
+            this.monsterSkillsListBox.Name = "monsterSkillsListBox";
+            this.monsterSkillsListBox.Size = new System.Drawing.Size(194, 87);
+            this.monsterSkillsListBox.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.monsterSkillsListBox, "柯莱");
             // 
             // monreslabel
             // 
@@ -722,9 +765,9 @@
             this.label16.AutoSize = true;
             this.label16.Location = new System.Drawing.Point(8, 94);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(62, 15);
+            this.label16.Size = new System.Drawing.Size(33, 15);
             this.label16.TabIndex = 7;
-            this.label16.Text = "Resistance";
+            this.label16.Text = "抗性";
             // 
             // mondeflabel
             // 
@@ -740,9 +783,9 @@
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(8, 74);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(49, 15);
+            this.label14.Size = new System.Drawing.Size(33, 15);
             this.label14.TabIndex = 5;
-            this.label14.Text = "Defense";
+            this.label14.Text = "防御";
             // 
             // monatklabel
             // 
@@ -758,9 +801,9 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(8, 54);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(41, 15);
+            this.label12.Size = new System.Drawing.Size(33, 15);
             this.label12.TabIndex = 3;
-            this.label12.Text = "Attack";
+            this.label12.Text = "攻击";
             // 
             // monhealthlabel
             // 
@@ -776,9 +819,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(8, 34);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(42, 15);
+            this.label9.Size = new System.Drawing.Size(46, 15);
             this.label9.TabIndex = 1;
-            this.label9.Text = "Health";
+            this.label9.Text = "生命值";
             // 
             // monnamelabel
             // 
@@ -788,43 +831,7 @@
             this.monnamelabel.Size = new System.Drawing.Size(83, 15);
             this.monnamelabel.TabIndex = 0;
             this.monnamelabel.Text = "monsterName";
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(441, 314);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Inventory";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(441, 314);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Buffs";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(441, 314);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Equipment";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // tabPage5
-            // 
-            this.tabPage5.Location = new System.Drawing.Point(4, 24);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(441, 314);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Options";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.monnamelabel.MouseHover += new System.EventHandler(this.Element_Details);
             // 
             // label8
             // 
@@ -834,6 +841,118 @@
             this.label8.Size = new System.Drawing.Size(65, 15);
             this.label8.TabIndex = 4;
             this.label8.Text = "No Mobs...";
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(360, 289);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 3;
+            this.button6.Text = "Go";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(276, 291);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(78, 19);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "自动战斗";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // tourdislabel
+            // 
+            this.tourdislabel.AutoSize = true;
+            this.tourdislabel.Location = new System.Drawing.Point(6, 292);
+            this.tourdislabel.Name = "tourdislabel";
+            this.tourdislabel.Size = new System.Drawing.Size(115, 15);
+            this.tourdislabel.TabIndex = 1;
+            this.tourdislabel.Text = "共计旅行距离：0m";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(441, 314);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "道具";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.dataGridView1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(441, 314);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "增益";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Name,
+            this.Values,
+            this.Buffs});
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(441, 314);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // Name
+            // 
+            this.Name.HeaderText = "增益类型";
+            this.Name.Name = "Name";
+            // 
+            // Values
+            // 
+            this.Values.HeaderText = "数值";
+            this.Values.Name = "Values";
+            // 
+            // Buffs
+            // 
+            this.Buffs.HeaderText = "轮数";
+            this.Buffs.Name = "Buffs";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(441, 314);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "装备";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(441, 314);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "设置";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "You Failed, Tour Progress Reset.";
+            this.notifyIcon1.BalloonTipTitle = "Game Over";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            this.toolTip1.ShowAlways = true;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTip1.ToolTipTitle = "Collei";
             // 
             // Main
             // 
@@ -848,10 +967,10 @@
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
-            this.Name = "Main";
             this.Text = "Yave\'s Tours";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -873,6 +992,9 @@
             this.monsterpanel.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -941,7 +1063,7 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox combatLog;
+        public System.Windows.Forms.TextBox combatLog;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button5;
@@ -954,6 +1076,18 @@
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Label totalDamagelabel;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.ListBox monsterSkillsListBox;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Values;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Buffs;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip elementToolTip;
     }
 }
 

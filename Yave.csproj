@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
     <Compile Include="Elements.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -58,6 +64,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Save.cs" />
+    <Compile Include="SkillDescribes.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SkillDescribes.Designer.cs">
+      <DependentUpon>SkillDescribes.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -71,6 +87,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SkillDescribes.resx">
+      <DependentUpon>SkillDescribes.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -94,6 +113,12 @@
     <None Include="Resources\yave_3.png" />
     <None Include="Resources\yave_2.png" />
     <None Include="Resources\yave_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Yave.Skill\Yave.Skill.csproj">
+      <Project>{f7935f45-e712-47d4-a817-af1dcdbbf406}</Project>
+      <Name>Yave.Skill</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
