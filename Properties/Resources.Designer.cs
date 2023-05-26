@@ -63,6 +63,16 @@ namespace Yave.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap spr_coin_0 {
+            get {
+                object obj = ResourceManager.GetObject("spr_coin_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap yave_1 {
             get {
                 object obj = ResourceManager.GetObject("yave_1", resourceCulture);

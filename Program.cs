@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Yave.Skill;
+using YaveDBLib;
 
 namespace Yave
 {
@@ -19,11 +20,24 @@ namespace Yave
         Shadow,
         Void
     }
+    public enum Locations
+    {
+        EmeraldPlains,
+        DripForest,
+        FrostmeltSnowMountain,
+        DolphinShore,
+        HarmonicDarkValley,
+        KarstCaveMine,
+        Shangri_La,
+        DeepevilVolcano
+    }
     // Character Class Start
     public class Character
     {
+        Random Random = new Random();
         //Basic Prop
         public int Level { get; set; }
+        public int TierLevel { get; set; }
         public string Name { get; set; }
         public double Health { get; set; }
         public double MaxHealth { get; set; }
@@ -32,8 +46,11 @@ namespace Yave
         public double Crit_Rate { get; set; }
         public double Crit_Damage { get; set; }
         public double XP { get; set; }
+        public int Coins { get; set; }
         public double MaxHP { get; set; }
         public int ElementID { get; set; }
+        public double XPBoost { get; set; }
+        public double CoinsBoost { get; set; }
         public List<Skill.Skill> Skill { get; set; }
         public List<Buff> Buffs { get; set; }
 
@@ -49,41 +66,84 @@ namespace Yave
 
         public Character()
         {
-            this.Name = "";
-            this.Health = 1;
-            this.MaxHealth = 1;
-            this.Attack = 0;
-            this.Defense = 0;
+            Name = "";
+            Health = 1;
+            MaxHealth = 1;
+            Attack = 0;
+            Defense = 0;
             Crit_Rate = 0.05;
             Crit_Damage = 0.5;
             XP = 0;
-            MaxHP = 100;
+            MaxHP = 50 + ValueData.Upgrade.Need[0];
             ElementID = 0;
             Skill = new List<Skill.Skill>();
             Buffs = new List<Buff>();
             isAlive = true;
 
-            baseMaxHealth = this.MaxHealth;
-            baseAttack = this.Attack;
-            baseDefense = this.Defense;
-            baseCritRate = this.Crit_Rate;
-            baseCritDamage = this.Crit_Damage;
+            baseMaxHealth = MaxHealth;
+            baseAttack = Attack;
+            baseDefense = Defense;
+            baseCritRate = Crit_Rate;
+            baseCritDamage = Crit_Damage;
+
+            XPBoost = 1;
+            CoinsBoost = 1;
         }
 
+        public void NewCharacter(string name, int elementID, double health, double atk, double defense)
+        {
+            Name = name;
+            ElementID = elementID;
+            MaxHealth = health;
+            Attack = atk;
+            Defense = defense;
+        }
 
+        public void Update()
+        {
+            baseMaxHealth = MaxHealth;
+            baseAttack = Attack;
+            baseDefense = Defense;
+            baseCritRate = Crit_Rate;
+            baseCritDamage = Crit_Damage;
+        }
         //Check Controls.
         /// <summary>
         /// Performs XP Check, If more than Max XP, then Upgrade.
         /// </summary>
-        private void CheckXP()
+        private string CheckXP()
         {
+            string e = "";
+            var a = new double[]
+            {
+                Random.Next((int)ValueData.Upgrade.Health[ElementID, TierLevel, 0], (int)ValueData.Upgrade.Health[ElementID, TierLevel, 1] + 1),
+                Random.Next((int)ValueData.Upgrade.ATK[ElementID, TierLevel, 0], (int)ValueData.Upgrade.ATK[ElementID, TierLevel, 1] + 1),
+                Random.Next((int)ValueData.Upgrade.DEF[ElementID, TierLevel, 0], (int)ValueData.Upgrade.DEF[ElementID, TierLevel, 1] + 1)
+            };
             if (XP >= MaxHP)
             {
-                Level += 1;
-                MaxHP = MaxHP * 1.28;
-                XP = 0;
-                Main.UpgradePoints += 1;
+                if (Level < 100)
+                {
+                    Level += 1;
+                    XP -= MaxHP;
+                    MaxHP = MaxHP + LevelXPNeed(Level);
+                    TierLVLUpgrade(Level);
+                    baseMaxHealth += a[0];
+                    baseAttack += a[1];
+                    baseDefense += a[2];
+                    MaxHealth = baseMaxHealth;
+                    Attack = baseAttack;
+                    Defense = baseDefense;
+                    Main.UpgradePoints += 1;
+                    e += $"角色升级！+{a[0]} 生命, +{a[1]} 攻击力, +{a[2]} 防御力。";
+                }
+                else
+                {
+                    Coins += (int)(XP - MaxHP);
+                    XP = MaxHP;
+                }
             }
+            return e;
         }
 
         /// <summary>
@@ -164,10 +224,117 @@ namespace Yave
             return a;
         }
 
-        public void AddXP(double xp)
+        public void AddXP(double xp, out string e)
         {
             XP += xp;
-            CheckXP();
+            e = CheckXP();
+        }
+
+        public void TierLVLUpgrade(int level)
+        {
+            if (level == 20 ||
+                level == 40 ||
+                level == 60 ||
+                level == 70 ||
+                level == 80 ||
+                level == 90)
+            {
+                this.TierLevel++;
+            }
+        }
+
+        public double LevelXPNeed(int level)
+        {
+            int a = 0;
+            if (level <= 4)
+            {
+                a = 0;
+            }
+            else if (level > 4 && level <= 9)
+            {
+                a = 1;
+            }
+            else if (level > 9 && level <= 14)
+            {
+                a = 2;
+            }
+            else if (level > 14 && level <= 19)
+            {
+                a = 3;
+            }
+            else if (level > 19 && level <= 24)
+            {
+                a = 4;
+            }
+            else if (level > 24 && level <= 29)
+            {
+                a = 5;
+            }
+            else if (level > 29 && level <= 34)
+            {
+                a = 6;
+            }
+            else if (level > 34 && level <= 39)
+            {
+                a = 7;
+            }
+            else if (level > 39 && level <= 45)
+            {
+                a = 8;
+            }
+            else if (level > 45 && level <= 52)
+            {
+                a = 9;
+            }
+            else if (level > 52 && level <= 59)
+            {
+                a = 10;
+            }
+            else if (level > 59 && level <= 62)
+            {
+                a = 11;
+            }
+            else if (level > 62 && level <= 64)
+            {
+                a = 12;
+            }
+            else if (level > 64 && level <= 66)
+            {
+                a = 13;
+            }
+            else if (level > 66 && level <= 69)
+            {
+                a = 14;
+            }
+            else if (level > 69 && level <= 74)
+            {
+                a = 15;
+            }
+            else if (level > 74 && level <= 79)
+            {
+                a = 16;
+            }
+            else if (level > 79 && level <= 84)
+            {
+                a = 17;
+            }
+            else if (level > 84 && level <= 89)
+            {
+                a = 18;
+            }
+            else if (level > 89 && level <= 92)
+            {
+                a = 19;
+            }
+            else if (level > 92 && level <= 95)
+            {
+                a = 20;
+            }
+            else if (level > 95)
+            {
+                a = 21;
+            }
+            return ValueData.Upgrade.Need[a];
         }
 
         public void Heal()
@@ -176,9 +343,49 @@ namespace Yave
             isAlive = CheckHealth();
         }
 
+        public void LevelUP()
+        {
+            baseMaxHealth += 20;
+        }
+
+        public void Sync()
+        {
+            if (this.Buffs.Count() > 0) {
+               foreach (var b in this.Buffs)
+                {
+                    b.Cycles--;
+                    if (b.Cycles <= 0 )
+                    {
+                        this.Buffs.Remove(b);
+                    }
+                }
+            }
+            // Base Health, ATK, DEF, CritRate, CritDamage.
+            double[] relativePercent = new double[] { 1.0, 1.0, 1.0, 1.0, 1.0 };
+            double[] absoluteValues = new double[5];
+            foreach (var a in this.Buffs)
+            {
+                if (a.Relative)
+                {
+                    relativePercent[a.ID] += a.Values;
+                }
+                absoluteValues[a.ID] += a.Values;
+            }
+            this.MaxHealth = this.baseMaxHealth + absoluteValues[0] * relativePercent[0];
+            this.Attack = this.baseAttack + absoluteValues[1] * relativePercent[1];
+            this.Defense = this.baseDefense + absoluteValues[2] * relativePercent[2];
+            this.Crit_Rate = this.baseCritRate + absoluteValues[3] * relativePercent[3];
+            this.Crit_Damage = this.baseCritDamage + absoluteValues[4] * relativePercent[4];
+        }
+
     }
     //Chatacter Class End
 
+    public class Reward
+    {
+        public double Coins { get; set; }
+        public double XP { get; set; }
+    }
     //Monster Class Start
     public class Monster
     {
@@ -190,13 +397,14 @@ namespace Yave
         public double Resistance;
         public int ElementID;
         public bool isAlive { get; set; }
+        public Reward Rewards { get; set; }
         public List<Skill.Skill> Skill { get; set; }
 
         private double baseMaxHealth;
         private double baseAttack;
         private double baseDefense;
 
-        public Monster(string name, double health, double attack, double defense, double resistance, int elementID, List<Skill.Skill> skill)
+        public Monster(string name, double health, double attack, double defense, double resistance, int elementID, List<Skill.Skill> skill, Reward rewards)
         {
             Name = name;
             Health = health;
@@ -205,8 +413,9 @@ namespace Yave
             Defense = defense;
             Resistance = resistance;
             ElementID = elementID;
-            isAlive= true;
+            isAlive = true;
             Skill = skill;
+            Rewards = rewards;
 
             baseMaxHealth = MaxHealth;
             baseAttack = attack;
@@ -257,7 +466,7 @@ namespace Yave
 
         public string GetHealth()
         {
-            return $"{ThreadSystem.ConvertPercent(Health / MaxHealth)}";
+            return $"{ThreadSystem.ConvertPercent(Health / MaxHealth)} [{Health}/{MaxHealth}]";
         }
 
         public string GetMonsterName()
@@ -291,6 +500,11 @@ namespace Yave
                     new List<Skill.Skill>
                     {
                         MonsterSkillPool.GetSkill()
+                    },
+                    new Reward
+                    {
+                        Coins = 8,
+                        XP = 13
                     }
                 ),
                 new Monster(
@@ -304,6 +518,11 @@ namespace Yave
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(1)
+                    },
+                    new Reward
+                    {
+                        Coins = 9,
+                        XP = 16
                     }
                 ),
                 new Monster(
@@ -316,6 +535,11 @@ namespace Yave
                     new List<Skill.Skill>
                     {
                         MonsterSkillPool.GetSkill(),
+                    },
+                    new Reward
+                    {
+                        Coins = 12,
+                        XP = 23
                     }
                 ),
                 new Monster(
@@ -329,6 +553,11 @@ namespace Yave
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(2)
+                    },
+                    new Reward
+                    {
+                        Coins = 23,
+                        XP = 14
                     }
                 ),
                 new Monster(
@@ -342,6 +571,11 @@ namespace Yave
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(3)
+                    },
+                    new Reward
+                    {
+                        Coins = 7,
+                        XP = 19
                     }
                 ),
                 new Monster(
@@ -355,6 +589,11 @@ namespace Yave
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(4)
+                    },
+                    new Reward
+                    {
+                        Coins = 8,
+                        XP = 10
                     }
                 ),
                 new Monster(
@@ -369,6 +608,11 @@ namespace Yave
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(1),
                         MonsterSkillPool.GetSkill(5)
+                    },
+                    new Reward
+                    {
+                        Coins = 10,
+                        XP = 14
                     }
                 ),
                 new Monster(
@@ -383,6 +627,11 @@ namespace Yave
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(1),
                         MonsterSkillPool.GetSkill(5)
+                    },
+                    new Reward
+                    {
+                        Coins = 11,
+                        XP = 15
                     }
                 ),
                 new Monster(
@@ -397,6 +646,11 @@ namespace Yave
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(3),
                         MonsterSkillPool.GetSkill(6)
+                    },
+                    new Reward
+                    {
+                        Coins = 7,
+                        XP = 17
                     }
                 ),
             };
@@ -535,8 +789,8 @@ namespace Yave
                     1,
                     "铁心",
                     new string[] {
-                        "提升自身的防御值",
-                        ""
+                        "提升自身的防御值，至多积攒 5 层。",
+                        "自身提升 {0} 防御力，最大不超过 {0}。"
                     },
                     new double[] { 0.13 },
                     new string[] {"Defense", "Shield", "Buff" }
@@ -548,7 +802,7 @@ namespace Yave
                     "荆棘",
                     new string[] {
                         "当敌人对你造成伤害，对方同时也造成少量伤害。",
-                        ""
+                        "敌人对你造成伤害的同时，敌方受到 {0} 的反击伤害。"
                     },
                     new double[] { 0.13 },
                     new string[] {"Defense"}
@@ -559,8 +813,8 @@ namespace Yave
                     1,
                     "『史莱姆领域』",
                     new string[] {
-                        "提升自己的攻击力。",
-                        ""
+                        "大量提升自己的攻击力，至多积攒 3 层。",
+                        "自身提升 {0} 攻击力，最大不超过 {0}。"
                     },
                     new double[] { 0.75 },
                     new string[] {"Attack", "Buff" }
@@ -572,7 +826,7 @@ namespace Yave
                     "『削弱之力』",
                     new string[] {
                         "对敌方造成中量伤害，并且削减对方的防御值。",
-                        ""
+                        "对敌方造成自身攻击力的 {0} 伤害，同时减弱敌方的 {1} 防御力。"
                     },
                     new double[] {0.8,0.2},
                     new string[] {"Defense"}
@@ -584,7 +838,7 @@ namespace Yave
                     "『自爆程序启动』",
                     new string[] {
                         "冷却5个回合，结束会自爆，对敌人造成超量伤害。",
-                        ""
+                        "此技能会冷却5个回合，期间无法使用任何动作，回合结束进行自爆操作，对敌人造成自身攻击力的 {0} 伤害。"
                     },
                     new double[] {4.5},
                     new string[] {"Defense"}
@@ -596,7 +850,7 @@ namespace Yave
                     "超级史莱姆",
                     new string[] {
                         "大量提升自己的攻击力，防御力。",
-                        ""
+                        "提升自身 {0} 的攻击力和防御力，开局使用一次且最多只能使用一次。"
                     },
                     new double[] {7.18},
                     new string[] {"Defense"}
@@ -607,11 +861,35 @@ namespace Yave
                     1,
                     "天降史莱姆！",
                     new string[] {
-                        "对地方造成大量伤害，同时提升自己的攻击力。",
-                        ""
+                        "对敌人造成大量伤害，同时提升自己的攻击力。",
+                        "对敌人造成自身攻击力的 {0} 伤害，提升自身 {1} 攻击力。"
                     },
                     new double[] {4.23,0.85},
                     new string[] {"Defense"}
+                ),
+                new Skill.Skill
+                (
+                    12,
+                    1,
+                    "『元素积攒器』",
+                    new string[] {
+                        "对敌方造成伤害的同时，为自身永久提升少量攻击力，至多积攒20层。",
+                        "进行 {0} 操作时，积攒提升 {0} 的攻击力，最多提升 20 次。"
+                    },
+                    new double[] {0.01},
+                    new string[] {"Attack","Buff"}
+                ),
+                new Skill.Skill
+                (
+                    13,
+                    1,
+                    "『我是史莱姆』",
+                    new string[] {
+                        "对敌方造成超多少量连击伤害，至多连击20次。",
+                        "对敌方进行连击伤害，伤害相当于自身攻击力的 {0}，至多进行连击 20 次。"
+                    },
+                    new double[] {0.1},
+                    new string[] {"Attack"}
                 ),
             };
         }
@@ -695,7 +973,7 @@ namespace Yave
                     Multiply = 0.5;
                     break;
             }
-            return value * Multiply * ((Main.TalentLevel + 1) * (Main.TalentLevel + 1) * 0.25);
+            return value * Multiply * ((Main.character.TierLevel + 1) * (Main.character.TierLevel + 1) * 0.25);
         }
         public static string ConvertPercent(double percent)
         {

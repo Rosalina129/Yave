@@ -42,6 +42,7 @@
             this.eXPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CoinsStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.upgradebutton = new System.Windows.Forms.Button();
             this.xplabel = new System.Windows.Forms.Label();
@@ -107,15 +108,15 @@
             this.tourdislabel = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Values = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Buffs = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.elementToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.rewardResults = new System.Windows.Forms.ToolStripStatusLabel();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -128,8 +129,7 @@
             this.monsterpanel.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -139,7 +139,8 @@
             this.filesToolStripMenuItem,
             this.infoToolStripMenuItem,
             this.eXPToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.CoinsStatus});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(724, 24);
@@ -175,12 +176,14 @@
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.saveToolStripMenuItem.Text = "保存...";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.saveAsToolStripMenuItem.Text = "另存为...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -214,6 +217,7 @@
             this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
             this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
             this.dashboardToolStripMenuItem.Text = "仪表板";
+            this.dashboardToolStripMenuItem.Click += new System.EventHandler(this.dashboardToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -221,6 +225,14 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.aboutToolStripMenuItem.Text = "关于";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // CoinsStatus
+            // 
+            this.CoinsStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.CoinsStatus.Image = global::Yave.Properties.Resources.spr_coin_0;
+            this.CoinsStatus.Name = "CoinsStatus";
+            this.CoinsStatus.Size = new System.Drawing.Size(41, 20);
+            this.CoinsStatus.Text = "0";
             // 
             // panel1
             // 
@@ -883,42 +895,12 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.dataGridView1);
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(441, 314);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "增益";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Name,
-            this.Values,
-            this.Buffs});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(441, 314);
-            this.dataGridView1.TabIndex = 0;
-            // 
-            // Name
-            // 
-            this.Name.HeaderText = "增益类型";
-            this.Name.Name = "Name";
-            // 
-            // Values
-            // 
-            this.Values.HeaderText = "数值";
-            this.Values.Name = "Values";
-            // 
-            // Buffs
-            // 
-            this.Buffs.HeaderText = "轮数";
-            this.Buffs.Name = "Buffs";
             // 
             // tabPage4
             // 
@@ -954,11 +936,40 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Collei";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rewardResults});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 594);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(724, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.TabIndex = 5;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // rewardResults
+            // 
+            this.rewardResults.Name = "rewardResults";
+            this.rewardResults.Size = new System.Drawing.Size(138, 17);
+            this.rewardResults.Text = "欢迎来到 Yave\'s Tours！";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.Filter = "Yave\'s Tours 存档文件|*.yts";
+            this.saveFileDialog1.Title = "保存到...";
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 10;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(724, 600);
+            this.ClientSize = new System.Drawing.Size(724, 616);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -971,6 +982,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
+            this.Name = "Main";
             this.Text = "Yave\'s Tours";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -993,8 +1005,8 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.groupBox5.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1082,12 +1094,13 @@
         private System.Windows.Forms.Label totalDamagelabel;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.ListBox monsterSkillsListBox;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Values;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Buffs;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ToolTip elementToolTip;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        public System.Windows.Forms.ToolStripStatusLabel rewardResults;
+        private System.Windows.Forms.ToolStripMenuItem CoinsStatus;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 

@@ -1,0 +1,41 @@
+{
+  "saveVersion": [
+    1,
+    0,
+    0
+  ],
+  "locationData": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "playerData": {
+    "level": 0,
+    "name": "安柏",
+    "health": {
+      "current": 180.0,
+      "max": 180.0
+    },
+    "attack": 15.400000000000002,
+    "defense": 17.0,
+    "critRate": 0.05,
+    "critDamage": 0.5,
+    "xp": {
+      "current": 0.0,
+      "max": 100.0
+    },
+    "elementID": 2,
+    "Skills": [
+      {
+        "ID": 0,
+        "level": 1
+      }
+    ],
+    "Buffs": []
+  }
+}

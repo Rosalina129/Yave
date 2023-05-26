@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace Yave
 {
-    internal class Save
+    internal class JSON
     {
         public struct Collection
         {
             public int[] saveVersion;
+            public int[] locationData;
+            public Player playerData;
+        }
+        public struct Player
+        {
             public int level;
             public string name;
             public Health health;
@@ -18,8 +23,9 @@ namespace Yave
             public double defense;
             public double critRate;
             public double critDamage;
+            public XP xp;
             public int elementID;
-            public Skill[] Skills;
+            public List<Skill> Skills;
             public List<Buff> Buffs;
         }
         public struct Health
@@ -27,7 +33,7 @@ namespace Yave
             public double current;
             public double max;
         }
-        public struct xp
+        public struct XP
         {
             public double current;
             public double max;
@@ -35,7 +41,6 @@ namespace Yave
         public struct Skill {
             public int ID;
             public int level;
-            public string name;
         };
     }
 }

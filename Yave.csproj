@@ -36,6 +36,9 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,6 +58,12 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dashboard.Designer.cs">
+      <DependentUpon>Dashboard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Elements.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -64,15 +73,24 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Save.cs" />
+    <Compile Include="JSON.cs" />
     <Compile Include="SkillDescribes.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SkillDescribes.Designer.cs">
       <DependentUpon>SkillDescribes.cs</DependentUpon>
     </Compile>
+    <Compile Include="TitleScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TitleScreen.Designer.cs">
+      <DependentUpon>TitleScreen.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dashboard.resx">
+      <DependentUpon>Dashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -90,6 +108,10 @@
     <EmbeddedResource Include="SkillDescribes.resx">
       <DependentUpon>SkillDescribes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TitleScreen.resx">
+      <DependentUpon>TitleScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -105,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="icon.ico" />
+    <None Include="Resources\spr_coin_0.png" />
     <None Include="Resources\YaveYuFamily.png" />
     <None Include="Resources\yave_7.png" />
     <None Include="Resources\yave_6.png" />
@@ -118,6 +141,10 @@
     <ProjectReference Include="..\Yave.Skill\Yave.Skill.csproj">
       <Project>{f7935f45-e712-47d4-a817-af1dcdbbf406}</Project>
       <Name>Yave.Skill</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\YaveDBLib\YaveDBLib.csproj">
+      <Project>{31e735f3-8bf5-4773-8d07-5266d6621bf3}</Project>
+      <Name>YaveDBLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
