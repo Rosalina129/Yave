@@ -50,6 +50,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -68,7 +69,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Yave.Properties.Resources.YaveYuFamily;
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(148, 57);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(217, 216);
@@ -285,6 +286,10 @@
             this.label8.Text = "注：该难度无法保存，只限区域“绿宝石平原”";
             this.label8.Visible = false;
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // TitleScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -336,5 +341,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

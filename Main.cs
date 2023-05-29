@@ -166,6 +166,10 @@ namespace Yave
                     //MessageBox.Show(FileName);
                     NewSaveInit();
                 }
+                if (TitleScreen.isLoaded)
+                {
+                    LoadData();
+                }
             }
         }
         private void upgradebutton_Click(object sender, EventArgs e)
@@ -438,7 +442,38 @@ namespace Yave
 
         private void LoadData()
         {
-
+            Character a = character;
+            JSON.Collection b = new JSON.Collection();
+            FileStream fs = new FileStream(FileName, FileMode.Open, FileAccess.Read);
+            StreamReader sr = new StreamReader(fs);
+            string JsonDataString = sr.ReadToEnd();
+            sr.Close();
+            fs.Close();
+            b = JsonConvert.DeserializeObject<JSON.Collection>(JsonDataString);
+            SaveVersion = b.saveVersion;
+            for (int i = 0; i < distance.Length; i++)
+            {
+                distance[i] = b.locationData[i];
+            }
+            a.Level = b.playerData.level;
+            a.Name = b.playerData.name;
+            a.Health = b.playerData.health.current;
+            a.MaxHealth = b.playerData.health.max;
+            a.Attack = b.playerData.attack;
+            a.Defense = b.playerData.defense;
+            a.Crit_Rate = b.playerData.critRate;
+            a.Crit_Damage = b.playerData.critDamage;
+            a.XP = b.playerData.xp.current;
+            a.MaxHP = b.playerData.xp.max;
+            a.ElementID = b.playerData.elementID;
+            for (int i = 0; i < b.playerData.Skills.Count; i++)
+            {
+                a.Skill.Add(
+                    PlayerSkillPool.GetSkill(b.playerData.Skills[i].ID)
+                );
+            }
+            a.Buffs = b.playerData.Buffs;
+            saveCooldown = 65 * 120;
         }
 
         private bool CheckFileExists()
@@ -501,6 +536,15 @@ namespace Yave
         {
             PlayerProp playerProp = new PlayerProp();
             playerProp.Show();
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                FileName = openFileDialog1.FileName;
+                LoadData();
+            }
         }
     }
 }

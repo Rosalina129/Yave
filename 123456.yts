@@ -5,7 +5,7 @@
     0
   ],
   "locationData": [
-    0,
+    1239,
     0,
     0,
     0,
@@ -15,19 +15,19 @@
     0
   ],
   "playerData": {
-    "level": 0,
+    "level": 2,
     "name": "123",
     "health": {
-      "current": 180.0,
-      "max": 180.0
+      "current": 181.0,
+      "max": 211.0
     },
-    "attack": 14.0,
-    "defense": 17.0,
+    "attack": 22.0,
+    "defense": 24.0,
     "critRate": 0.05,
     "critDamage": 0.5,
     "xp": {
-      "current": 0.0,
-      "max": 100.0
+      "current": 37.81696261023027,
+      "max": 200.0
     },
     "elementID": 0,
     "Skills": [

@@ -42,13 +42,11 @@
             this.eXPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.CoinsStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.upgradebutton = new System.Windows.Forms.Button();
             this.xplabel = new System.Windows.Forms.Label();
             this.levellabel = new System.Windows.Forms.Label();
             this.charNamelabel = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tourTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button8 = new System.Windows.Forms.Button();
@@ -117,9 +115,11 @@
             this.rewardResults = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.CoinsStatus = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -130,6 +130,7 @@
             this.panel3.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -162,33 +163,39 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.newToolStripMenuItem.Text = "新建...";
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.loadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.loadToolStripMenuItem.Text = "加载...";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.saveToolStripMenuItem.Text = "保存...";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.saveAsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.S)));
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.saveAsToolStripMenuItem.Text = "另存为...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(119, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(191, 6);
             // 
             // infoToolStripMenuItem
             // 
@@ -225,14 +232,6 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.aboutToolStripMenuItem.Text = "关于";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // CoinsStatus
-            // 
-            this.CoinsStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.CoinsStatus.Image = global::Yave.Properties.Resources.spr_coin_0;
-            this.CoinsStatus.Name = "CoinsStatus";
-            this.CoinsStatus.Size = new System.Drawing.Size(41, 20);
-            this.CoinsStatus.Text = "0";
             // 
             // panel1
             // 
@@ -285,15 +284,6 @@
             this.charNamelabel.TabIndex = 1;
             this.charNamelabel.Text = "Character";
             this.charNamelabel.MouseHover += new System.EventHandler(this.Element_Details);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Yave.Properties.Resources.yave_1;
-            this.pictureBox1.Location = new System.Drawing.Point(4, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(30, 64);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // tourTimer
             // 
@@ -965,6 +955,29 @@
             this.timer2.Interval = 10;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Yave.Properties.Resources.yave_1;
+            this.pictureBox1.Location = new System.Drawing.Point(4, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(30, 64);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // CoinsStatus
+            // 
+            this.CoinsStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.CoinsStatus.Image = global::Yave.Properties.Resources.spr_coin_0;
+            this.CoinsStatus.Name = "CoinsStatus";
+            this.CoinsStatus.Size = new System.Drawing.Size(41, 20);
+            this.CoinsStatus.Text = "0";
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Yave\'s Tours 存档文件|*.yts";
+            this.openFileDialog1.Title = "读取 Yave\'s Tours 存档...";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -990,7 +1003,6 @@
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1008,6 +1020,7 @@
             this.groupBox5.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1102,6 +1115,7 @@
         private System.Windows.Forms.ToolStripMenuItem CoinsStatus;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

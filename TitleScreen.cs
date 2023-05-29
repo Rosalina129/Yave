@@ -170,7 +170,15 @@ namespace Yave
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "Yave's Tours 存档文件|*.yts";
+            openFileDialog1.Title = "读取 Yave's Tours 存档...";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                isLoaded = true;
+                Main.FileName = openFileDialog1.FileName;
+                this.Close();
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

@@ -82,6 +82,7 @@ namespace Yave
         Random Random = new Random();
 
         //Basic Prop for Player
+        public int Skin { get; set; }
         public int TierLevel { get; set; }
         public double XP { get; set; }
         public int Coins { get; set; }
