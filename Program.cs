@@ -231,9 +231,23 @@ namespace Yave
             CheckHealth();
         }
 
-        public void Add()
+        public void Add(AddType addType)
         {
-
+            switch (addType)
+            {
+                case AddType.Attack:
+                    /*
+                    this.Buffs.Add(
+                        new Buff()
+                        {
+                            ID = 2
+                        }
+                        ); ;
+                    */
+                    break;
+                case AddType.Defense:
+                    break;
+            }
         }
 
         public double TakeElementDamage(double ATKValue, double critRate, double critDamage, int elementA, int elementB, bool isAntiDefense = false)
@@ -417,7 +431,7 @@ namespace Yave
             switch (player.Skill[ID].SkillID)
             {
                 case 0:
-                    damageTotal += monster.TakeElementDamage(player.Skill[0].Value[player.Skill[0].Level - 1] * player.Attack, player.Crit_Rate, player.Crit_Damage, player.ElementID, monster.ElementID);
+                    damageTotal += monster.TakeElementDamage(player.Skill[0].Value[player.Skill[0].Level] * player.Attack, player.Crit_Rate, player.Crit_Damage, player.ElementID, monster.ElementID);
                     log += $"敌方受到了 {damageTotal} 点伤害\r\n";
                     break;
             }
@@ -741,59 +755,6 @@ namespace Yave
         }
     }
 
-    //Player Skill Pool Start
-    public class PlayerSkillPool
-    {
-        private static List<Skill.PlayerSkill> skills;
-
-        public PlayerSkillPool()
-        {
-            skills = new List<Skill.PlayerSkill>
-            {
-                new Skill.PlayerSkill(
-                0,
-                1,
-                "给你一拳",
-                new string[] {
-                    "对敌方造成普通伤害。",
-                    "对敌方造成相当于自身攻击力 {0} 的伤害。"
-                },
-                -5,
-                new double[]
-                    {
-                        0.55,
-                        0.65,
-                        0.75,
-                        0.88,
-                        1,
-                        1.12,
-                        1.18,
-                        1.25,
-                        1.32,
-                        1.39,
-                        1.44,
-                        1.49
-                    },
-                new string[]
-                    {
-                "Attack"
-                    }
-                )
-            };
-        }
-
-        public static PlayerSkill GetSkill(int ID = 0)
-        {
-            return skills[ID];
-        }
-
-        public static PlayerSkill SkillLevelUP(int ID)
-        {
-            skills[ID].Level += 1;
-            return skills[ID];
-        }
-    }
-    //Player Skill Pool End
     //Basic Class Start
     //Basic Class End
 
@@ -809,6 +770,34 @@ namespace Yave
     //Buff Class Start
     public class Buff
     {
+        /// <summary>
+        /// Buff Type:
+        /// <para>1: Max Health | 最大生命值</para>
+        /// <para>2: Attack | 攻击力</para>
+        /// <para>3: Defense | 防御力</para>
+        /// <para>4: Crit Rate | 暴击率</para>
+        /// <para>5: Crit Damage | 暴击伤害</para>
+        /// <para>11: Physical Resistance | 物理抗性</para>
+        /// <para>12: Water Resistance | 水抗性</para>
+        /// <para>13: Fire Resistance | 火抗性</para>
+        /// <para>14: Ice Resistance | 冰抗性</para>
+        /// <para>15: Grass Resistance | 草抗性</para>
+        /// <para>16: Lumine Resistance | 光明抗性</para>
+        /// <para>17: Shadow Resistance | 暗影抗性</para>
+        /// <para>18: Void Resistance | 虚无抗性</para>
+        /// <para>19: Physical Damage Bonus | 物理元素伤害加成</para>
+        /// <para>20: Water Damage Bonus | 水元素伤害加成</para>
+        /// <para>21: Fire Damage Bonus | 火元素伤害加成</para>
+        /// <para>22: Ice Damage Bonus | 冰元素伤害加成</para>
+        /// <para>23: Grass Damage Bonus | 草元素伤害加成</para>
+        /// <para>24: Lumine Damage Bonus | 光明元素伤害加成</para>
+        /// <para>25: Shadow Damage Bonus | 暗影元素伤害加成</para>
+        /// <para>26: Void Damage Bonus | 虚无元素伤害加成</para>
+        /// <para>31: Skill Cost | 技能损耗</para>
+        /// <para>32: Skill Cooldown | 技能冷却</para>
+        /// <para>41: Shield Bonus | 护盾加成</para>
+        /// <para>42: Shield Absorption Cost | 护盾吸收损耗</para>
+        /// </summary>
         public int ID { get; set; }
         public string Name { get; set; }
         public double Values { get; set; }

@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using YaveDBLib;
+using Yave.Skill;
 
 namespace Yave
 {
@@ -114,7 +115,7 @@ namespace Yave
             character.Defense = ValueData.Player.Defense * Difficulty_Control_Player(Difficult);
             character.Crit_Rate = ValueData.Player.CritRate;
             character.Crit_Damage = ValueData.Player.CritDamage;
-            character.Skill = new List<Skill.PlayerSkill> { PlayerSkillPool.GetSkill() };
+            character.Skill = new List<PlayerSkill> { PlayerSkillPool.GetSkill() };
             character.ElementID = TitleScreen.Element;
             ElementBuffs(character.ElementID);
             character.Update();
@@ -394,7 +395,7 @@ namespace Yave
 
         private void SaveData()
         {
-            CheckFileExists();
+            //CheckFileExists();
             JSON.Collection JsonData = new JSON.Collection();
             FileStream fs = new FileStream(FileName, FileMode.Create);
             StreamWriter sw = new StreamWriter(fs);
@@ -494,6 +495,12 @@ namespace Yave
                 cacheData_a= 0;
                 timer2.Enabled = false;
             }
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            PlayerProp playerProp = new PlayerProp();
+            playerProp.Show();
         }
     }
 }
