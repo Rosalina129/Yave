@@ -35,6 +35,7 @@ namespace Yave
         private int saveCooldown = 65 * 180;
         private int cacheData_a = 0;
 
+
         public static Character character = new Character();
         MonsterPool monsterpool = new MonsterPool(Difficult);
         PlayerSkillPool skillPool = new PlayerSkillPool();

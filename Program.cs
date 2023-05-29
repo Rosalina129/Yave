@@ -44,13 +44,9 @@ namespace Yave
         Skill,
     }
     // Entity Base Class
-    // Character Class Start
-    public class Character
+    public abstract class Entity
     {
-        Random Random = new Random();
-        //Basic Prop
         public int Level { get; set; }
-        public int TierLevel { get; set; }
         public string Name { get; set; }
         public double Health { get; set; }
         public double MaxHealth { get; set; }
@@ -58,24 +54,32 @@ namespace Yave
         public double Defense { get; set; }
         public double Crit_Rate { get; set; }
         public double Crit_Damage { get; set; }
-        public double XP { get; set; }
-        public int Coins { get; set; }
-        public double MaxHP { get; set; }
         public int ElementID { get; set; }
-        public double XPBoost { get; set; }
-        public double CoinsBoost { get; set; }
         public List<Skill.Skill> Skill { get; set; }
         public List<Buff> Buffs { get; set; }
 
         //Prop
         public bool isAlive { get; set; }
 
-        //Base Datas.
-        private double baseMaxHealth;
-        private double baseAttack;
-        private double baseDefense;
-        private double baseCritRate;
-        private double baseCritDamage;
+        //Base Datas
+        public double baseMaxHealth;
+        public double baseAttack;
+        public double baseDefense;
+        public double baseCritRate;
+        public double baseCritDamage;
+    }
+    // Character Class Start
+    public class Character : Entity
+    {
+        Random Random = new Random();
+
+        //Basic Prop for Player
+        public int TierLevel { get; set; }
+        public double XP { get; set; }
+        public int Coins { get; set; }
+        public double MaxHP { get; set; }
+        public double XPBoost { get; set; }
+        public double CoinsBoost { get; set; }
 
         public Character()
         {
@@ -405,22 +409,10 @@ namespace Yave
         public double XP { get; set; }
     }
     //Monster Class Start
-    public class Monster
+    public class Monster : Entity
     {
-        public string Name;
-        public double Health;
-        public double MaxHealth;
-        public double Attack;
-        public double Defense;
         public double Resistance;
-        public int ElementID;
-        public bool isAlive { get; set; }
         public Reward Rewards { get; set; }
-        public List<Skill.Skill> Skill { get; set; }
-
-        private double baseMaxHealth;
-        private double baseAttack;
-        private double baseDefense;
 
         public Monster(string name, double health, double attack, double defense, double resistance, int elementID, List<Skill.Skill> skill, Reward rewards)
         {
