@@ -31,6 +31,19 @@ namespace Yave
         Shangri_La,
         DeepevilVolcano
     }
+
+    public enum AddType
+    {
+        None,
+        Health,
+        Attack,
+        Defense,
+        CritRate,
+        CritDamage,
+        XP,
+        Skill,
+    }
+    // Entity Base Class
     // Character Class Start
     public class Character
     {
@@ -203,6 +216,11 @@ namespace Yave
         {
             Health+= hp;
             CheckHealth();
+        }
+
+        public void Add()
+        {
+
         }
 
         public double TakeElementDamage(double ATKValue, double critRate, double critDamage, int elementA, int elementB, bool isAntiDefense = false)
@@ -671,6 +689,7 @@ namespace Yave
         {
             skills = new List<Skill.Skill>
             {
+                /*
                 new Skill.Skill(
                 0,
                 1,
@@ -698,7 +717,7 @@ namespace Yave
                     {
                 "Attack"
                     }
-                )
+                )*/
             };
         }
 
@@ -723,6 +742,7 @@ namespace Yave
         {
             skills = new List<Skill.Skill>
             {
+                /**
                 new Skill.Skill
                 (
                     0,
@@ -891,6 +911,7 @@ namespace Yave
                     new double[] {0.1},
                     new string[] {"Attack"}
                 ),
+                */
             };
         }
 
