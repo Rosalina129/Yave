@@ -55,7 +55,6 @@ namespace Yave
         public double Crit_Rate { get; set; }
         public double Crit_Damage { get; set; }
         public int ElementID { get; set; }
-        public List<Skill.Skill> Skill { get; set; }
         public List<Buff> Buffs { get; set; }
 
         //Prop
@@ -67,6 +66,15 @@ namespace Yave
         public double baseDefense;
         public double baseCritRate;
         public double baseCritDamage;
+        /// <summary>
+        /// 使用技能
+        /// </summary>
+        /// <param name="ID">技能的ID</param>
+        /// <param name="player">玩家对象</param>
+        /// <param name="monster">怪物对象</param>
+        /// <param name="target">目标，真为 Monster，假为 Player</param>
+        /// <param name="log">输出的日志文本</param>
+        public abstract double UseSkill(int ID, Character player, Monster monster, out string log);
     }
     // Character Class Start
     public class Character : Entity
@@ -80,6 +88,7 @@ namespace Yave
         public double MaxHP { get; set; }
         public double XPBoost { get; set; }
         public double CoinsBoost { get; set; }
+        public List<Skill.PlayerSkill> Skill { get; set; } = new List<Skill.PlayerSkill>();
 
         public Character()
         {
@@ -93,7 +102,7 @@ namespace Yave
             XP = 0;
             MaxHP = 50 + ValueData.Upgrade.Need[0];
             ElementID = 0;
-            Skill = new List<Skill.Skill>();
+            Skill = new List<Skill.PlayerSkill>();
             Buffs = new List<Buff>();
             isAlive = true;
 
@@ -400,6 +409,21 @@ namespace Yave
             this.Crit_Damage = this.baseCritDamage + absoluteValues[4] * relativePercent[4];
         }
 
+        public override double UseSkill(int ID, Character player, Monster monster, out string log)
+        {
+            double damageTotal = 0.0;
+            log = "";
+            log += $"{player.Name} 使用了 {player.Skill[ID].Name}.\r\n";
+            switch (player.Skill[ID].SkillID)
+            {
+                case 0:
+                    damageTotal += monster.TakeElementDamage(player.Skill[0].Value[player.Skill[0].Level - 1] * player.Attack, player.Crit_Rate, player.Crit_Damage, player.ElementID, monster.ElementID);
+                    log += $"敌方受到了 {damageTotal} 点伤害\r\n";
+                    break;
+            }
+            return damageTotal;
+            throw new NotImplementedException();
+        }
     }
     //Chatacter Class End
 
@@ -411,10 +435,11 @@ namespace Yave
     //Monster Class Start
     public class Monster : Entity
     {
-        public double Resistance;
+        public double Resistance { get; set; }
+        public List<MonsterSkill> Skill { get; set; }
         public Reward Rewards { get; set; }
 
-        public Monster(string name, double health, double attack, double defense, double resistance, int elementID, List<Skill.Skill> skill, Reward rewards)
+        public Monster(string name, double health, double attack, double defense, double resistance, int elementID, List<Skill.MonsterSkill> skill, Reward rewards)
         {
             Name = name;
             Health = health;
@@ -488,6 +513,50 @@ namespace Yave
         {
             return $"{ThreadSystem.ConvertPercent(Resistance)}";
         }
+
+        public override double UseSkill(int ID, Character player, Monster monster, out string log)
+        {
+            double damageTotal = 0.0;
+            log = "";
+            log += $"{monster.Name} 使用了 {monster.Skill[ID].Name}.\r\n";
+            switch (monster.Skill[ID].SkillID)
+            {
+                case 0:
+                case 1:
+                    damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
+                    log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                    break;
+                case 2:
+                    for (int a = 0; a < monster.Skill[ID].Value.Length; a++)
+                    {
+                        damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[a] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
+                        log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                    }
+                    break;
+                case 3:
+                    damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID, true);
+                    log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                    break;
+                case 4:
+                    damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
+                    log += $"玩家受到了 {damageTotal} 点伤害\r\n";
+                    monster.Health += monster.Skill[ID].Value[0] * damageTotal;
+                    log += $"敌方回复了 {damageTotal} HP\r\n";
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+            }
+            return damageTotal;
+            throw new NotImplementedException();
+        }
     }
     //Monster Class End
     public class MonsterPool
@@ -507,7 +576,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(10,Difficulty),
                     0,
                     (int)ElementName.Grass,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill()
                     },
@@ -524,7 +593,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(12,Difficulty),
                     0,
                     (int)ElementName.Physical,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(1)
@@ -542,7 +611,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(7,Difficulty),
                     0,
                     (int)ElementName.Fire,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                     },
@@ -559,7 +628,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(12,Difficulty),
                     0,
                     (int)ElementName.Lumine,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(2)
@@ -577,7 +646,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(13,Difficulty),
                     0,
                     (int)ElementName.Grass,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(3)
@@ -595,7 +664,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(19,Difficulty),
                     0,
                     (int)ElementName.Ice,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(4)
@@ -613,7 +682,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(12,Difficulty),
                     0,
                     (int)ElementName.Water,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(1),
@@ -632,7 +701,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(19,Difficulty),
                     0,
                     (int)ElementName.Shadow,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(1),
@@ -651,7 +720,7 @@ namespace Yave
                     ThreadSystem.Difficulty_Control(20,Difficulty),
                     0,
                     (int)ElementName.Void,
-                    new List<Skill.Skill>
+                    new List<MonsterSkill>
                     {
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(3),
@@ -675,14 +744,13 @@ namespace Yave
     //Player Skill Pool Start
     public class PlayerSkillPool
     {
-        private static List<Skill.Skill> skills;
+        private static List<Skill.PlayerSkill> skills;
 
         public PlayerSkillPool()
         {
-            skills = new List<Skill.Skill>
+            skills = new List<Skill.PlayerSkill>
             {
-                /*
-                new Skill.Skill(
+                new Skill.PlayerSkill(
                 0,
                 1,
                 "给你一拳",
@@ -690,6 +758,7 @@ namespace Yave
                     "对敌方造成普通伤害。",
                     "对敌方造成相当于自身攻击力 {0} 的伤害。"
                 },
+                -5,
                 new double[]
                     {
                         0.55,
@@ -709,210 +778,22 @@ namespace Yave
                     {
                 "Attack"
                     }
-                )*/
+                )
             };
         }
 
-        public static Skill.Skill GetSkill(int ID = 0)
+        public static PlayerSkill GetSkill(int ID = 0)
         {
             return skills[ID];
         }
 
-        public static Skill.Skill SkillLevelUP(int ID)
+        public static PlayerSkill SkillLevelUP(int ID)
         {
             skills[ID].Level += 1;
             return skills[ID];
         }
     }
     //Player Skill Pool End
-    //Monster Skill Pool Start
-    public class MonsterSkillPool
-    {
-        private static List<Skill.Skill> skills = null;
-
-        public MonsterSkillPool()
-        {
-            skills = new List<Skill.Skill>
-            {
-                /**
-                new Skill.Skill
-                (
-                    0,
-                    1,
-                    "撞击",
-                    new string[] {
-                        "对敌人造成部分伤害。",
-                        "对敌方造成相当于自身攻击力 {0} 的伤害。"
-                    },
-                    new double[] {0.9},
-                    new string[] { "Attack" }
-                ),
-                new Skill.Skill
-                (
-                    1,
-                    1,
-                    "重击",
-                    new string[] {
-                        "对敌人造成大量伤害。",
-                        "对敌方造成致命一击，攻击力相当于自身的 {0}。"
-                    },
-                    new double[] { 1.35 },
-                    new string[] {"Attack"}
-                ),
-                new Skill.Skill
-                (
-                    2,
-                    1,
-                    "连续撞击",
-                    new string[] {
-                        "对敌人造成少量的连续伤害。",
-                        "对敌方分别造成自身攻击力 {0},{1} 的伤害。"
-                    },
-                    new double[] {0.52,0.76},
-                    new string[] {"Attack", "Chain" }
-                ),
-                new Skill.Skill
-                (
-                    3,
-                    1,
-                    "破甲撞击",
-                    new string[] {
-                        "无视敌人的防御力，直接对敌人造成少量伤害。",
-                        "无视敌人的防御力，对敌方造成自身攻击力 {0} 的伤害。"
-                    },
-                    new double[] {0.7},
-                    new string[] {"Attack", "Armour Penetration" }
-                ),
-                new Skill.Skill
-                (
-                    4,
-                    1,
-                    "生命吸收",
-                    new string[] {
-                        "对敌人造成少量伤害的同时，吸收造成的伤害为治疗的生命值。",
-                        "对敌方造成自身攻击力 {0} 的伤害，同时治疗自身，回复量相当于此次造成的伤害值。"
-                    },
-                    new double[] {0.5},
-                    new string[] {"Attack", "Health" }
-                ),
-                new Skill.Skill
-                (
-                    5,
-                    1,
-                    "铁心",
-                    new string[] {
-                        "提升自身的防御值，至多积攒 5 层。",
-                        "自身提升 {0} 防御力，最大不超过 {0}。"
-                    },
-                    new double[] { 0.13 },
-                    new string[] {"Defense", "Shield", "Buff" }
-                ),
-                new Skill.Skill
-                (
-                    6,
-                    1,
-                    "荆棘",
-                    new string[] {
-                        "当敌人对你造成伤害，对方同时也造成少量伤害。",
-                        "敌人对你造成伤害的同时，敌方受到 {0} 的反击伤害。"
-                    },
-                    new double[] { 0.13 },
-                    new string[] {"Defense"}
-                ),
-                new Skill.Skill
-                (
-                    7,
-                    1,
-                    "『史莱姆领域』",
-                    new string[] {
-                        "大量提升自己的攻击力，至多积攒 3 层。",
-                        "自身提升 {0} 攻击力，最大不超过 {0}。"
-                    },
-                    new double[] { 0.75 },
-                    new string[] {"Attack", "Buff" }
-                ),
-                new Skill.Skill
-                (
-                    8,
-                    1,
-                    "『削弱之力』",
-                    new string[] {
-                        "对敌方造成中量伤害，并且削减对方的防御值。",
-                        "对敌方造成自身攻击力的 {0} 伤害，同时减弱敌方的 {1} 防御力。"
-                    },
-                    new double[] {0.8,0.2},
-                    new string[] {"Defense"}
-                ),
-                new Skill.Skill
-                (
-                    9,
-                    1,
-                    "『自爆程序启动』",
-                    new string[] {
-                        "冷却5个回合，结束会自爆，对敌人造成超量伤害。",
-                        "此技能会冷却5个回合，期间无法使用任何动作，回合结束进行自爆操作，对敌人造成自身攻击力的 {0} 伤害。"
-                    },
-                    new double[] {4.5},
-                    new string[] {"Defense"}
-                ),
-                new Skill.Skill
-                (
-                    10,
-                    1,
-                    "超级史莱姆",
-                    new string[] {
-                        "大量提升自己的攻击力，防御力。",
-                        "提升自身 {0} 的攻击力和防御力，开局使用一次且最多只能使用一次。"
-                    },
-                    new double[] {7.18},
-                    new string[] {"Defense"}
-                ),
-                new Skill.Skill
-                (
-                    11,
-                    1,
-                    "天降史莱姆！",
-                    new string[] {
-                        "对敌人造成大量伤害，同时提升自己的攻击力。",
-                        "对敌人造成自身攻击力的 {0} 伤害，提升自身 {1} 攻击力。"
-                    },
-                    new double[] {4.23,0.85},
-                    new string[] {"Defense"}
-                ),
-                new Skill.Skill
-                (
-                    12,
-                    1,
-                    "『元素积攒器』",
-                    new string[] {
-                        "对敌方造成伤害的同时，为自身永久提升少量攻击力，至多积攒20层。",
-                        "进行 {0} 操作时，积攒提升 {0} 的攻击力，最多提升 20 次。"
-                    },
-                    new double[] {0.01},
-                    new string[] {"Attack","Buff"}
-                ),
-                new Skill.Skill
-                (
-                    13,
-                    1,
-                    "『我是史莱姆』",
-                    new string[] {
-                        "对敌方造成超多少量连击伤害，至多连击20次。",
-                        "对敌方进行连击伤害，伤害相当于自身攻击力的 {0}，至多进行连击 20 次。"
-                    },
-                    new double[] {0.1},
-                    new string[] {"Attack"}
-                ),
-                */
-            };
-        }
-
-        public static Skill.Skill GetSkill(int ID = 0)
-        {
-            return skills[ID];
-        }
-    }
-    //Monster Skill Pool End
     //Basic Class Start
     //Basic Class End
 
@@ -1023,62 +904,5 @@ namespace Yave
             return Elements.Values[elementA,elementB];
         }
 
-        public static double UseSkill(int ID, Character player, Monster monster, bool source, out string log)
-        {
-            double damageTotal = 0.0;
-            log = "";
-            if (source) //Player Use
-            {
-                log += $"{player.Name} 使用了 {player.Skill[ID].Name}.\r\n";
-                switch (player.Skill[ID].SkillID)
-                {
-                    case 0:
-                        damageTotal += monster.TakeElementDamage(player.Skill[0].Value[player.Skill[0].Level-1] * player.Attack, player.Crit_Rate, player.Crit_Damage, player.ElementID, monster.ElementID);
-                        log += $"敌方受到了 {damageTotal} 点伤害\r\n";
-                        break;
-                }
-            }
-            else
-            {
-                log += $"{monster.Name} 使用了 {monster.Skill[ID].Name}.\r\n";
-                switch (monster.Skill[ID].SkillID)
-                {
-                    case 0:
-                    case 1:
-                        damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
-                        log += $"玩家受到了 {damageTotal} 点伤害\r\n";
-                        break;
-                    case 2:
-                        for (int a = 0; a < monster.Skill[ID].Value.Length; a++)
-                        {
-                            damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[a] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
-                            log += $"玩家受到了 {damageTotal} 点伤害\r\n";
-                        }
-                        break;
-                    case 3:
-                        damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID,true);
-                        log += $"玩家受到了 {damageTotal} 点伤害\r\n";
-                        break;
-                    case 4:
-                        damageTotal = player.TakeElementDamage(monster.Skill[ID].Value[0] * monster.Attack, 0, 0, player.ElementID, monster.ElementID);
-                        log += $"玩家受到了 {damageTotal} 点伤害\r\n";
-                        monster.Health += monster.Skill[ID].Value[0] * damageTotal;
-                        log += $"敌方回复了 {damageTotal} HP\r\n";
-                        break;
-                    case 5:
-
-                        break;
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                    case 8:
-                        break;
-                    case 9:
-                        break;
-                }
-            }
-            return damageTotal;
-        }
     }
 }

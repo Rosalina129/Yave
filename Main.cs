@@ -114,7 +114,7 @@ namespace Yave
             character.Defense = ValueData.Player.Defense * Difficulty_Control_Player(Difficult);
             character.Crit_Rate = ValueData.Player.CritRate;
             character.Crit_Damage = ValueData.Player.CritDamage;
-            character.Skill = new List<Skill.Skill> { PlayerSkillPool.GetSkill() };
+            character.Skill = new List<Skill.PlayerSkill> { PlayerSkillPool.GetSkill() };
             character.ElementID = TitleScreen.Element;
             ElementBuffs(character.ElementID);
             character.Update();
@@ -229,7 +229,7 @@ namespace Yave
             double c = 0.0;
             clearLog();
             string e = "";
-            c = ThreadSystem.UseSkill(0, character, monster, true, out e);
+            c = character.UseSkill(0, character, monster, out e);
             WritetoLog(e);
             if (!monster.isAlive)
             {
@@ -239,7 +239,7 @@ namespace Yave
             {
                 int i = random.Next(0, monster.Skill.Count);
                 WritetoLog($"=====================");
-                ThreadSystem.UseSkill(i, character, monster, false, out e);
+                monster.UseSkill(i, character, monster, out e);
                 WritetoLog(e);
                 if (!monster.isAlive)
                 {
