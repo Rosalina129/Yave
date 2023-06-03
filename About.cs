@@ -27,5 +27,10 @@ namespace Yave
         {
             this.Close();
         }
+
+        private void About_Load(object sender, EventArgs e)
+        {
+            label2.Text = $"Version: {Main.SoftwareVersion[0]}.{Main.SoftwareVersion[1]}.{Main.SoftwareVersion[2]}";
+        }
     }
 }

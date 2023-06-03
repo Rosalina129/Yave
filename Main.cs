@@ -26,6 +26,7 @@ namespace Yave
         public static string FileName = "";
         // Init Player and more Datas.
         public static int[] SaveVersion = new int[] {1,0,0};
+        public static int[] SoftwareVersion = new int[] {1,0,20230603,0};
         public static int UpgradePoints = 0;
         public static int Difficult = 3;
 
