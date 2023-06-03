@@ -32,20 +32,19 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerProp));
             this.charnamelabel = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.skinLabel = new System.Windows.Forms.Label();
-            this.baseHealthlabel = new System.Windows.Forms.Label();
-            this.baseATKlabel = new System.Windows.Forms.Label();
             this.baseDEFlabel = new System.Windows.Forms.Label();
+            this.baseATKlabel = new System.Windows.Forms.Label();
+            this.baseHealthlabel = new System.Windows.Forms.Label();
+            this.skinLabel = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.ATKLabel = new System.Windows.Forms.Label();
-            this.maxHPlabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.MaxXPlabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.luminelabel = new System.Windows.Forms.Label();
             this.grasslabel = new System.Windows.Forms.Label();
             this.icelabel = new System.Windows.Forms.Label();
@@ -55,8 +54,9 @@
             this.label12 = new System.Windows.Forms.Label();
             this.voidlabel = new System.Windows.Forms.Label();
             this.shadowlabel = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -90,23 +90,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "天生属性";
             // 
-            // skinLabel
+            // baseDEFlabel
             // 
-            this.skinLabel.AutoSize = true;
-            this.skinLabel.Location = new System.Drawing.Point(6, 19);
-            this.skinLabel.Name = "skinLabel";
-            this.skinLabel.Size = new System.Drawing.Size(33, 15);
-            this.skinLabel.TabIndex = 2;
-            this.skinLabel.Text = "皮肤";
-            // 
-            // baseHealthlabel
-            // 
-            this.baseHealthlabel.AutoSize = true;
-            this.baseHealthlabel.Location = new System.Drawing.Point(6, 34);
-            this.baseHealthlabel.Name = "baseHealthlabel";
-            this.baseHealthlabel.Size = new System.Drawing.Size(72, 15);
-            this.baseHealthlabel.TabIndex = 3;
-            this.baseHealthlabel.Text = "基础生命值";
+            this.baseDEFlabel.AutoSize = true;
+            this.baseDEFlabel.Location = new System.Drawing.Point(6, 64);
+            this.baseDEFlabel.Name = "baseDEFlabel";
+            this.baseDEFlabel.Size = new System.Drawing.Size(72, 15);
+            this.baseDEFlabel.TabIndex = 5;
+            this.baseDEFlabel.Text = "基础防御力";
             // 
             // baseATKlabel
             // 
@@ -117,14 +108,23 @@
             this.baseATKlabel.TabIndex = 4;
             this.baseATKlabel.Text = "基础攻击力";
             // 
-            // baseDEFlabel
+            // baseHealthlabel
             // 
-            this.baseDEFlabel.AutoSize = true;
-            this.baseDEFlabel.Location = new System.Drawing.Point(6, 64);
-            this.baseDEFlabel.Name = "baseDEFlabel";
-            this.baseDEFlabel.Size = new System.Drawing.Size(72, 15);
-            this.baseDEFlabel.TabIndex = 5;
-            this.baseDEFlabel.Text = "基础防御力";
+            this.baseHealthlabel.AutoSize = true;
+            this.baseHealthlabel.Location = new System.Drawing.Point(6, 34);
+            this.baseHealthlabel.Name = "baseHealthlabel";
+            this.baseHealthlabel.Size = new System.Drawing.Size(72, 15);
+            this.baseHealthlabel.TabIndex = 3;
+            this.baseHealthlabel.Text = "基础生命值";
+            // 
+            // skinLabel
+            // 
+            this.skinLabel.AutoSize = true;
+            this.skinLabel.Location = new System.Drawing.Point(6, 19);
+            this.skinLabel.Name = "skinLabel";
+            this.skinLabel.Size = new System.Drawing.Size(33, 15);
+            this.skinLabel.TabIndex = 2;
+            this.skinLabel.Text = "皮肤";
             // 
             // groupBox2
             // 
@@ -136,13 +136,43 @@
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.ATKLabel);
-            this.groupBox2.Controls.Add(this.maxHPlabel);
+            this.groupBox2.Controls.Add(this.MaxXPlabel);
             this.groupBox2.Location = new System.Drawing.Point(12, 129);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(283, 131);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "后天基础属性";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 109);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 15);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "技能冷却";
+            this.toolTip1.SetToolTip(this.label3, "角色的技能的冷却回合数、");
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 94);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(59, 15);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "技能损耗";
+            this.toolTip1.SetToolTip(this.label2, "角色使用技能的能量消耗百分比。");
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 79);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 15);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "暴击伤害";
+            this.toolTip1.SetToolTip(this.label1, "角色造成暴击时，造成的额外伤害值百分比。");
             // 
             // label4
             // 
@@ -174,49 +204,112 @@
             this.ATKLabel.Text = "攻击力";
             this.toolTip1.SetToolTip(this.ATKLabel, "角色的攻击力，决定了能造成多少伤害。");
             // 
-            // maxHPlabel
+            // MaxXPlabel
             // 
-            this.maxHPlabel.AutoSize = true;
-            this.maxHPlabel.Location = new System.Drawing.Point(6, 19);
-            this.maxHPlabel.Name = "maxHPlabel";
-            this.maxHPlabel.Size = new System.Drawing.Size(72, 15);
-            this.maxHPlabel.TabIndex = 2;
-            this.maxHPlabel.Text = "最大生命值";
-            this.toolTip1.SetToolTip(this.maxHPlabel, "角色的生命值的最大上限。");
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 79);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 15);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "暴击伤害";
-            this.toolTip1.SetToolTip(this.label1, "角色造成暴击时，造成的额外伤害值百分比。");
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 94);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 15);
-            this.label2.TabIndex = 7;
-            this.label2.Text = "技能损耗";
-            this.toolTip1.SetToolTip(this.label2, "角色使用技能的能量消耗百分比。");
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 109);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 15);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "技能冷却";
-            this.toolTip1.SetToolTip(this.label3, "角色的技能的冷却回合数、");
+            this.MaxXPlabel.AutoSize = true;
+            this.MaxXPlabel.Location = new System.Drawing.Point(6, 19);
+            this.MaxXPlabel.Name = "MaxXPlabel";
+            this.MaxXPlabel.Size = new System.Drawing.Size(72, 15);
+            this.MaxXPlabel.TabIndex = 2;
+            this.MaxXPlabel.Text = "最大生命值";
+            this.toolTip1.SetToolTip(this.MaxXPlabel, "角色的生命值的最大上限。");
             // 
             // toolTip1
             // 
+            this.toolTip1.IsBalloon = true;
             this.toolTip1.ToolTipTitle = "说明";
+            // 
+            // luminelabel
+            // 
+            this.luminelabel.AutoSize = true;
+            this.luminelabel.Location = new System.Drawing.Point(6, 109);
+            this.luminelabel.Name = "luminelabel";
+            this.luminelabel.Size = new System.Drawing.Size(87, 15);
+            this.luminelabel.TabIndex = 8;
+            this.luminelabel.Text = "Lumine 光明 []";
+            // 
+            // grasslabel
+            // 
+            this.grasslabel.AutoSize = true;
+            this.grasslabel.Location = new System.Drawing.Point(6, 94);
+            this.grasslabel.Name = "grasslabel";
+            this.grasslabel.Size = new System.Drawing.Size(62, 15);
+            this.grasslabel.TabIndex = 7;
+            this.grasslabel.Text = "Grass 草 []";
+            // 
+            // icelabel
+            // 
+            this.icelabel.AutoSize = true;
+            this.icelabel.Location = new System.Drawing.Point(6, 79);
+            this.icelabel.Name = "icelabel";
+            this.icelabel.Size = new System.Drawing.Size(49, 15);
+            this.icelabel.TabIndex = 6;
+            this.icelabel.Text = "Ice 冰 []";
+            // 
+            // firelabel
+            // 
+            this.firelabel.AutoSize = true;
+            this.firelabel.Location = new System.Drawing.Point(6, 64);
+            this.firelabel.Name = "firelabel";
+            this.firelabel.Size = new System.Drawing.Size(53, 15);
+            this.firelabel.TabIndex = 5;
+            this.firelabel.Text = "Fire 火 []";
+            // 
+            // waterlabel
+            // 
+            this.waterlabel.AutoSize = true;
+            this.waterlabel.Location = new System.Drawing.Point(6, 49);
+            this.waterlabel.Name = "waterlabel";
+            this.waterlabel.Size = new System.Drawing.Size(65, 15);
+            this.waterlabel.TabIndex = 4;
+            this.waterlabel.Text = "Water 水 []";
+            // 
+            // physicallabel
+            // 
+            this.physicallabel.AutoSize = true;
+            this.physicallabel.Location = new System.Drawing.Point(6, 34);
+            this.physicallabel.Name = "physicallabel";
+            this.physicallabel.Size = new System.Drawing.Size(90, 15);
+            this.physicallabel.TabIndex = 3;
+            this.physicallabel.Text = "Physical 物理 []";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 19);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(265, 15);
+            this.label12.TabIndex = 2;
+            this.label12.Text = "以下数值的格式为：元素伤害加成 / 元素抗性";
+            this.toolTip1.SetToolTip(this.label12, "角色的生命值的最大上限。");
+            // 
+            // voidlabel
+            // 
+            this.voidlabel.AutoSize = true;
+            this.voidlabel.Location = new System.Drawing.Point(6, 139);
+            this.voidlabel.Name = "voidlabel";
+            this.voidlabel.Size = new System.Drawing.Size(70, 15);
+            this.voidlabel.TabIndex = 10;
+            this.voidlabel.Text = "Void 虚无 []";
+            // 
+            // shadowlabel
+            // 
+            this.shadowlabel.AutoSize = true;
+            this.shadowlabel.Location = new System.Drawing.Point(6, 124);
+            this.shadowlabel.Name = "shadowlabel";
+            this.shadowlabel.Size = new System.Drawing.Size(89, 15);
+            this.shadowlabel.TabIndex = 9;
+            this.shadowlabel.Text = "Shadow 暗影 []";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 19);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(59, 15);
+            this.label14.TabIndex = 3;
+            this.label14.Text = "护盾加成";
+            this.toolTip1.SetToolTip(this.label14, "此值决定了玩家在获得护盾时能额外获得的护盾值。");
             // 
             // groupBox3
             // 
@@ -238,96 +331,6 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "后天元素属性";
             // 
-            // luminelabel
-            // 
-            this.luminelabel.AutoSize = true;
-            this.luminelabel.Location = new System.Drawing.Point(6, 109);
-            this.luminelabel.Name = "luminelabel";
-            this.luminelabel.Size = new System.Drawing.Size(87, 15);
-            this.luminelabel.TabIndex = 8;
-            this.luminelabel.Text = "Lumine 光明 []";
-            this.toolTip1.SetToolTip(this.luminelabel, "角色的技能的冷却回合数、");
-            // 
-            // grasslabel
-            // 
-            this.grasslabel.AutoSize = true;
-            this.grasslabel.Location = new System.Drawing.Point(6, 94);
-            this.grasslabel.Name = "grasslabel";
-            this.grasslabel.Size = new System.Drawing.Size(62, 15);
-            this.grasslabel.TabIndex = 7;
-            this.grasslabel.Text = "Grass 草 []";
-            this.toolTip1.SetToolTip(this.grasslabel, "角色使用技能的能量消耗百分比。");
-            // 
-            // icelabel
-            // 
-            this.icelabel.AutoSize = true;
-            this.icelabel.Location = new System.Drawing.Point(6, 79);
-            this.icelabel.Name = "icelabel";
-            this.icelabel.Size = new System.Drawing.Size(49, 15);
-            this.icelabel.TabIndex = 6;
-            this.icelabel.Text = "Ice 冰 []";
-            this.toolTip1.SetToolTip(this.icelabel, "角色造成暴击时，造成的额外伤害值百分比。");
-            // 
-            // firelabel
-            // 
-            this.firelabel.AutoSize = true;
-            this.firelabel.Location = new System.Drawing.Point(6, 64);
-            this.firelabel.Name = "firelabel";
-            this.firelabel.Size = new System.Drawing.Size(53, 15);
-            this.firelabel.TabIndex = 5;
-            this.firelabel.Text = "Fire 火 []";
-            this.toolTip1.SetToolTip(this.firelabel, "角色能造成暴击的几率。");
-            // 
-            // waterlabel
-            // 
-            this.waterlabel.AutoSize = true;
-            this.waterlabel.Location = new System.Drawing.Point(6, 49);
-            this.waterlabel.Name = "waterlabel";
-            this.waterlabel.Size = new System.Drawing.Size(65, 15);
-            this.waterlabel.TabIndex = 4;
-            this.waterlabel.Text = "Water 水 []";
-            this.toolTip1.SetToolTip(this.waterlabel, "角色的防御力，决定了能减免伤害的多少。");
-            // 
-            // physicallabel
-            // 
-            this.physicallabel.AutoSize = true;
-            this.physicallabel.Location = new System.Drawing.Point(6, 34);
-            this.physicallabel.Name = "physicallabel";
-            this.physicallabel.Size = new System.Drawing.Size(90, 15);
-            this.physicallabel.TabIndex = 3;
-            this.physicallabel.Text = "Physical 物理 []";
-            this.toolTip1.SetToolTip(this.physicallabel, "角色的攻击力，决定了能造成多少伤害。");
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(6, 19);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(265, 15);
-            this.label12.TabIndex = 2;
-            this.label12.Text = "以下数值的格式为：元素伤害加成 / 元素抗性";
-            this.toolTip1.SetToolTip(this.label12, "角色的生命值的最大上限。");
-            // 
-            // voidlabel
-            // 
-            this.voidlabel.AutoSize = true;
-            this.voidlabel.Location = new System.Drawing.Point(6, 139);
-            this.voidlabel.Name = "voidlabel";
-            this.voidlabel.Size = new System.Drawing.Size(70, 15);
-            this.voidlabel.TabIndex = 10;
-            this.voidlabel.Text = "Void 虚无 []";
-            this.toolTip1.SetToolTip(this.voidlabel, "角色的技能的冷却回合数、");
-            // 
-            // shadowlabel
-            // 
-            this.shadowlabel.AutoSize = true;
-            this.shadowlabel.Location = new System.Drawing.Point(6, 124);
-            this.shadowlabel.Name = "shadowlabel";
-            this.shadowlabel.Size = new System.Drawing.Size(89, 15);
-            this.shadowlabel.TabIndex = 9;
-            this.shadowlabel.Text = "Shadow 暗影 []";
-            this.toolTip1.SetToolTip(this.shadowlabel, "角色使用技能的能量消耗百分比。");
-            // 
             // groupBox4
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -339,16 +342,6 @@
             this.groupBox4.TabIndex = 11;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "额外属性";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 19);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(59, 15);
-            this.label14.TabIndex = 3;
-            this.label14.Text = "护盾加成";
-            this.toolTip1.SetToolTip(this.label14, "角色的攻击力，决定了能造成多少伤害。");
             // 
             // timer1
             // 
@@ -368,7 +361,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PlayerProp";
             this.Text = "玩家属性";
             this.Load += new System.EventHandler(this.PlayerProp_Load);
@@ -397,7 +390,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label ATKLabel;
-        private System.Windows.Forms.Label maxHPlabel;
+        private System.Windows.Forms.Label MaxXPlabel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;

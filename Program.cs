@@ -5,7 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Yave.Skill;
+using Yave.Buff;
 using YaveDBLib;
+using System.Diagnostics;
 
 namespace Yave
 {
@@ -32,16 +34,38 @@ namespace Yave
         DeepevilVolcano
     }
 
-    public enum AddType
+    public enum BuffType
     {
         None,
-        Health,
+        MaxHealth,
         Attack,
         Defense,
         CritRate,
         CritDamage,
-        XP,
-        Skill,
+        PhysicalRes,
+        WaterRes,
+        FireRes,
+        IceRes,
+        GrassRes,
+        LumineRes,
+        ShadowRes,
+        VoidRes,
+        PhysicalDMG,
+        WaterDMG,
+        FireDMG,
+        IceDMG,
+        GrassDMG,
+        LumineDMG,
+        ShadowDMG,
+        VoidDMG,
+        SkillCost,
+        SkillCD,
+        ShieldBonus,
+        ShieldAbs,
+        XPBonus,
+        CoinsBonus,
+        ItemDropBonus,
+        LootBonus
     }
     // Entity Base Class
     public abstract class Entity
@@ -55,7 +79,8 @@ namespace Yave
         public double Crit_Rate { get; set; }
         public double Crit_Damage { get; set; }
         public int ElementID { get; set; }
-        public List<Buff> Buffs { get; set; }
+        public ElementsPrep EPrep { get; set; }
+        public List<Buff.Buff> Buffs { get; set; }
 
         //Prop
         public bool isAlive { get; set; }
@@ -86,9 +111,12 @@ namespace Yave
         public int TierLevel { get; set; }
         public double XP { get; set; }
         public int Coins { get; set; }
-        public double MaxHP { get; set; }
+        public double MaxXP { get; set; }
         public double XPBoost { get; set; }
         public double CoinsBoost { get; set; }
+        public double SkillCost { get; set; }
+        public double Shield { get; set; }
+        public double ShieldMulti { get; set; }
         public List<Skill.PlayerSkill> Skill { get; set; } = new List<Skill.PlayerSkill>();
 
         public Character()
@@ -101,10 +129,10 @@ namespace Yave
             Crit_Rate = 0.05;
             Crit_Damage = 0.5;
             XP = 0;
-            MaxHP = 50 + ValueData.Upgrade.Need[0];
+            MaxXP = 50 + ValueData.Upgrade.Need[0];
             ElementID = 0;
             Skill = new List<Skill.PlayerSkill>();
-            Buffs = new List<Buff>();
+            Buffs = new List<Buff.Buff>();
             isAlive = true;
 
             baseMaxHealth = MaxHealth;
@@ -147,13 +175,13 @@ namespace Yave
                 Random.Next((int)ValueData.Upgrade.ATK[ElementID, TierLevel, 0], (int)ValueData.Upgrade.ATK[ElementID, TierLevel, 1] + 1),
                 Random.Next((int)ValueData.Upgrade.DEF[ElementID, TierLevel, 0], (int)ValueData.Upgrade.DEF[ElementID, TierLevel, 1] + 1)
             };
-            if (XP >= MaxHP)
+            if (XP >= MaxXP)
             {
                 if (Level < 100)
                 {
                     Level += 1;
-                    XP -= MaxHP;
-                    MaxHP = MaxHP + LevelXPNeed(Level);
+                    XP -= MaxXP;
+                    MaxXP = MaxXP + LevelXPNeed(Level);
                     TierLVLUpgrade(Level);
                     baseMaxHealth += a[0];
                     baseAttack += a[1];
@@ -164,10 +192,10 @@ namespace Yave
                     Main.UpgradePoints += 1;
                     e += $"角色升级！+{a[0]} 生命, +{a[1]} 攻击力, +{a[2]} 防御力。";
                 }
-                else
+                else if (Level == 100 && XP == MaxXP)
                 {
-                    Coins += (int)(XP - MaxHP);
-                    XP = MaxHP;
+                    Coins += (int)(XP - MaxXP);
+                    XP = MaxXP;
                 }
             }
             return e;
@@ -222,7 +250,7 @@ namespace Yave
 
         public string GetXP()
         {
-            return $"{Math.Round(XP, 0)}/{Math.Round(MaxHP, 0)}";
+            return $"{Math.Round(XP, 0)}/{Math.Round(MaxXP, 0)}";
         }
 
         //Control Functions
@@ -232,23 +260,16 @@ namespace Yave
             CheckHealth();
         }
 
-        public void Add(AddType addType)
+        public void AddBuff(Buff.Buff buff)
         {
-            switch (addType)
-            {
-                case AddType.Attack:
-                    /*
-                    this.Buffs.Add(
-                        new Buff()
-                        {
-                            ID = 2
-                        }
-                        ); ;
-                    */
-                    break;
-                case AddType.Defense:
-                    break;
-            }
+            this.Buffs.Add(buff);
+            Sync();
+        }
+
+        public void RemoveBuff(int a)
+        {
+            this.Buffs.Remove(this.Buffs[a]);
+            Sync();
         }
 
         public double TakeElementDamage(double ATKValue, double critRate, double critDamage, int elementA, int elementB, bool isAntiDefense = false)
@@ -394,21 +415,29 @@ namespace Yave
             baseMaxHealth += 20;
         }
 
-        public void Sync()
+        public void SyncBuffPer()
         {
-            if (this.Buffs.Count() > 0) {
-               foreach (var b in this.Buffs)
+            for (int i = 0; i < this.Buffs.Count; i++)
+            {
+                this.Buffs[i].Cycles--;
+                if (this.Buffs[i].Cycles == 0)
                 {
-                    b.Cycles--;
-                    if (b.Cycles <= 0 )
-                    {
-                        this.Buffs.Remove(b);
-                    }
+                    RemoveBuff(i);
                 }
             }
+            Sync();
+        }
+
+        public void Sync()
+        {
+            int length = Buff.Buff.buffType.Length;
             // Base Health, ATK, DEF, CritRate, CritDamage.
-            double[] relativePercent = new double[] { 1.0, 1.0, 1.0, 1.0, 1.0 };
-            double[] absoluteValues = new double[5];
+            double[] relativePercent = new double[length];
+            for (int i = 0;i < relativePercent.Length; i++)
+            {
+                relativePercent[i] = 1.0;
+            }
+            double[] absoluteValues = new double[length];
             foreach (var a in this.Buffs)
             {
                 if (a.Relative)
@@ -417,11 +446,11 @@ namespace Yave
                 }
                 absoluteValues[a.ID] += a.Values;
             }
-            this.MaxHealth = this.baseMaxHealth + absoluteValues[0] * relativePercent[0];
-            this.Attack = this.baseAttack + absoluteValues[1] * relativePercent[1];
-            this.Defense = this.baseDefense + absoluteValues[2] * relativePercent[2];
-            this.Crit_Rate = this.baseCritRate + absoluteValues[3] * relativePercent[3];
-            this.Crit_Damage = this.baseCritDamage + absoluteValues[4] * relativePercent[4];
+            this.MaxHealth = this.baseMaxHealth * (relativePercent[0]) + absoluteValues[0];
+            this.Attack = this.baseAttack * (relativePercent[1]) + absoluteValues[1] ;
+            this.Defense = this.baseDefense * (relativePercent[2]) + absoluteValues[2];
+            this.Crit_Rate = this.baseCritRate * (relativePercent[3]) + absoluteValues[3];
+            this.Crit_Damage = this.baseCritDamage * (relativePercent[4]) + absoluteValues[4];
         }
 
         public override double UseSkill(int ID, Character player, Monster monster, out string log)
@@ -768,55 +797,6 @@ namespace Yave
     }
     //Items Class End
 
-    //Buff Class Start
-    public class Buff
-    {
-        /// <summary>
-        /// Buff Type:
-        /// <para>1: Max Health | 最大生命值</para>
-        /// <para>2: Attack | 攻击力</para>
-        /// <para>3: Defense | 防御力</para>
-        /// <para>4: Crit Rate | 暴击率</para>
-        /// <para>5: Crit Damage | 暴击伤害</para>
-        /// <para>11: Physical Resistance | 物理抗性</para>
-        /// <para>12: Water Resistance | 水抗性</para>
-        /// <para>13: Fire Resistance | 火抗性</para>
-        /// <para>14: Ice Resistance | 冰抗性</para>
-        /// <para>15: Grass Resistance | 草抗性</para>
-        /// <para>16: Lumine Resistance | 光明抗性</para>
-        /// <para>17: Shadow Resistance | 暗影抗性</para>
-        /// <para>18: Void Resistance | 虚无抗性</para>
-        /// <para>19: Physical Damage Bonus | 物理元素伤害加成</para>
-        /// <para>20: Water Damage Bonus | 水元素伤害加成</para>
-        /// <para>21: Fire Damage Bonus | 火元素伤害加成</para>
-        /// <para>22: Ice Damage Bonus | 冰元素伤害加成</para>
-        /// <para>23: Grass Damage Bonus | 草元素伤害加成</para>
-        /// <para>24: Lumine Damage Bonus | 光明元素伤害加成</para>
-        /// <para>25: Shadow Damage Bonus | 暗影元素伤害加成</para>
-        /// <para>26: Void Damage Bonus | 虚无元素伤害加成</para>
-        /// <para>31: Skill Cost | 技能损耗</para>
-        /// <para>32: Skill Cooldown | 技能冷却</para>
-        /// <para>41: Shield Bonus | 护盾加成</para>
-        /// <para>42: Shield Absorption Cost | 护盾吸收损耗</para>
-        /// </summary>
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public double Values { get; set; }
-        public bool Relative { get; set; }
-        public int Cycles { get; set; }
-        public string[] Tags { get; set; }
-
-        public Buff(int id, string name, double values, bool relative, int cycles, string[] tags)
-        {
-            ID = id;
-            Name = name;
-            Values = values;
-            Relative = relative;
-            Cycles = cycles;
-            Tags = tags;
-        }
-    }
-    //Buff Class End
 
     internal static class Program
     {
@@ -894,5 +874,10 @@ namespace Yave
             return Elements.Values[elementA,elementB];
         }
 
+    }
+    public struct ElementsPrep
+    {
+        public double[] ERes;
+        public double[] EDMGBonus;
     }
 }

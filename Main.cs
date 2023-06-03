@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using YaveDBLib;
 using Yave.Skill;
+using System.Security.Policy;
 
 namespace Yave
 {
@@ -88,7 +89,7 @@ namespace Yave
         {
             var addxpValue = monster.Rewards.XP * character.XPBoost * Difficulty_Control_Player(Difficult) * (character.TierLevel * character.TierLevel+1) * (random.NextDouble() + 1.2);
             var addCoinsValue = monster.Rewards.Coins * character.CoinsBoost * Difficulty_Control_Player(Difficult) * (character.TierLevel * character.TierLevel + 1) * (random.NextDouble() + 1.2);
-            if (character.Level == 100)
+            if (character.Level == 100 && character.XP >= character.MaxXP)
             {
                 rewardResults.Text = $"获得 {Math.Round(addCoinsValue, 0)} (溢出部分 +{Math.Round(addxpValue, 0)}) 金币。";
             }
@@ -120,7 +121,7 @@ namespace Yave
             ElementBuffs(character.ElementID);
             character.Update();
             character.Heal();
-            SaveData();
+            if (Difficult!= 0)  SaveData();
         }
 
         private void RefreshData()
@@ -371,7 +372,7 @@ namespace Yave
             switch (Element_ID)
             {
                 case 0:
-                    character.XPBoost += ValueData.Player.XPBoost;
+                    a.XPBoost += ValueData.Player.XPBoost;
                     break;
                 case 1:
                     a.MaxHealth *= (ValueData.Player.BaseBoost + 1);
@@ -383,61 +384,80 @@ namespace Yave
                     a.Defense *= (ValueData.Player.BaseBoost + 1);
                     break;
                 case 4:
-                    //ValueData.Player.ElementRes;
+                    var b = ValueData.Player.ElementRes;
+                    a.EPrep.ERes[(int)ElementName.Physical] = b;
+                    a.EPrep.ERes[(int)ElementName.Water] = b;
+                    a.EPrep.ERes[(int)ElementName.Fire] = b;
+                    a.EPrep.ERes[(int)ElementName.Ice] = b;
+                    a.EPrep.ERes[(int)ElementName.Grass] = b;
+                    a.EPrep.ERes[(int)ElementName.Lumine] = b;
+                    a.EPrep.ERes[(int)ElementName.Shadow] = b;
+                    a.EPrep.ERes[(int)ElementName.Void] = b;
                     break;
                 case 5:
-                    //ValueData.Player.ElementDamage;
+                    var c = ValueData.Player.ElementDamage;
+                    a.EPrep.EDMGBonus[(int)ElementName.Physical] = c;
+                    a.EPrep.EDMGBonus[(int)ElementName.Water] = c;
+                    a.EPrep.EDMGBonus[(int)ElementName.Fire] = c;
+                    a.EPrep.EDMGBonus[(int)ElementName.Ice] = c;
+                    a.EPrep.EDMGBonus[(int)ElementName.Grass] = c;
+                    a.EPrep.EDMGBonus[(int)ElementName.Lumine] = c;
+                    a.EPrep.EDMGBonus[(int)ElementName.Shadow] = c;
+                    a.EPrep.EDMGBonus[(int)ElementName.Void] = c;
                     break;
                 case 6:
-                    //ValueData.Player.SkillCost;
+                    a.SkillCost = ValueData.Player.SkillCost;
                     break;
                 case 7:
-                    character.CoinsBoost += ValueData.Player.RewardBoost;
+                    a.CoinsBoost += ValueData.Player.RewardBoost;
                     break;
             }
         }
 
         private void SaveData()
         {
-            //CheckFileExists();
-            JSON.Collection JsonData = new JSON.Collection();
-            FileStream fs = new FileStream(FileName, FileMode.Create);
-            StreamWriter sw = new StreamWriter(fs);
-            JsonData.saveVersion = SaveVersion;
-            JsonData.locationData = new int[8];
-            for (int i = 0; i < distance.Length; i++)
+            if (Difficult != 0)
             {
-                JsonData.locationData[i] = distance[i];
+                //CheckFileExists();
+                JSON.Collection JsonData = new JSON.Collection();
+                FileStream fs = new FileStream(FileName, FileMode.Create);
+                StreamWriter sw = new StreamWriter(fs);
+                JsonData.saveVersion = SaveVersion;
+                JsonData.locationData = new int[8];
+                for (int i = 0; i < distance.Length; i++)
+                {
+                    JsonData.locationData[i] = distance[i];
+                }
+                JsonData.playerData.level = character.Level;
+                JsonData.playerData.name = character.Name;
+                JsonData.playerData.health.current = character.Health;
+                JsonData.playerData.health.max = character.MaxHealth;
+                JsonData.playerData.attack = character.Attack;
+                JsonData.playerData.defense = character.Defense;
+                JsonData.playerData.critRate = character.Crit_Rate;
+                JsonData.playerData.critDamage = character.Crit_Damage;
+                JsonData.playerData.xp.current = character.XP;
+                JsonData.playerData.xp.max = character.MaxXP;
+                JsonData.playerData.elementID = character.ElementID;
+                JsonData.playerData.Skills = new List<JSON.Skill>();
+                for (int i = 0; i < character.Skill.Count; i++)
+                {
+                    JsonData.playerData.Skills.Add(
+                        new JSON.Skill
+                        {
+                            ID = character.Skill[i].SkillID,
+                            level = character.Skill[i].Level
+                        }
+                    );
+                }
+                JsonData.playerData.Buffs = character.Buffs;
+                string JsonDataString = JsonConvert.SerializeObject(JsonData, Formatting.Indented);
+                sw.WriteLine(JsonDataString);
+                sw.Close();
+                fs.Close();
+                saveCooldown = 65 * 180;
+                timer2.Enabled = true;
             }
-            JsonData.playerData.level = character.Level;
-            JsonData.playerData.name = character.Name;
-            JsonData.playerData.health.current = character.Health;
-            JsonData.playerData.health.max = character.MaxHealth;
-            JsonData.playerData.attack = character.Attack;
-            JsonData.playerData.defense = character.Defense;
-            JsonData.playerData.critRate = character.Crit_Rate;
-            JsonData.playerData.critDamage = character.Crit_Damage;
-            JsonData.playerData.xp.current = character.XP;
-            JsonData.playerData.xp.max = character.MaxHP;
-            JsonData.playerData.elementID = character.ElementID;
-            JsonData.playerData.Skills = new List<JSON.Skill>();
-            for (int i = 0; i < character.Skill.Count; i++)
-            {
-                JsonData.playerData.Skills.Add(
-                    new JSON.Skill
-                    {
-                        ID = character.Skill[i].SkillID,
-                        level = character.Skill[i].Level
-                    }
-                );
-            }
-            JsonData.playerData.Buffs = character.Buffs;
-            string JsonDataString = JsonConvert.SerializeObject(JsonData, Formatting.Indented);
-            sw.WriteLine(JsonDataString);
-            sw.Close();
-            fs.Close();
-            saveCooldown = 65 * 180;
-            timer2.Enabled = true;
         }
 
         private void LoadData()
@@ -464,7 +484,7 @@ namespace Yave
             a.Crit_Rate = b.playerData.critRate;
             a.Crit_Damage = b.playerData.critDamage;
             a.XP = b.playerData.xp.current;
-            a.MaxHP = b.playerData.xp.max;
+            a.MaxXP = b.playerData.xp.max;
             a.ElementID = b.playerData.elementID;
             for (int i = 0; i < b.playerData.Skills.Count; i++)
             {
@@ -474,8 +494,9 @@ namespace Yave
             }
             a.Buffs = b.playerData.Buffs;
             saveCooldown = 65 * 120;
+            a.Update();
         }
-
+        /*
         private bool CheckFileExists()
         {
             var result = false;
@@ -486,7 +507,7 @@ namespace Yave
             }
             return result;
         }
-
+        */
         private void dashboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Dashboard dashboard = new Dashboard();
@@ -501,10 +522,7 @@ namespace Yave
             }
             else
             {
-                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-                {
-                    SaveData();
-                }
+                SaveData();
             }
         }
 
@@ -514,6 +532,14 @@ namespace Yave
             if (Difficult == 0)
             {
                 MessageBox.Show("你当前为菜鸟模式，无法保存！", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    FileName = saveFileDialog1.FileName;
+                    SaveData();
+                }
             }
         }
 

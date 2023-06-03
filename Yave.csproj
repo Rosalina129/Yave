@@ -147,6 +147,10 @@
     <None Include="Resources\yave_1.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yave.Buff\Yave.Buff.csproj">
+      <Project>{d170dc3a-fdb8-4c09-ae67-a3efbe58eaad}</Project>
+      <Name>Yave.Buff</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yave.Skill\Yave.Skill.csproj">
       <Project>{f7935f45-e712-47d4-a817-af1dcdbbf406}</Project>
       <Name>Yave.Skill</Name>

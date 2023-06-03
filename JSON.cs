@@ -26,7 +26,7 @@ namespace Yave
             public XP xp;
             public int elementID;
             public List<Skill> Skills;
-            public List<Buff> Buffs;
+            public List<Buff.Buff> Buffs;
         }
         public struct Health
         {

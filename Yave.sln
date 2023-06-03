@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yave.Skill", "..\Yave.Skill
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YaveDBLib", "..\YaveDBLib\YaveDBLib.csproj", "{31E735F3-8BF5-4773-8D07-5266D6621BF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yave.Buff", "..\Yave.Buff\Yave.Buff.csproj", "{D170DC3A-FDB8-4C09-AE67-A3EFBE58EAAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{31E735F3-8BF5-4773-8D07-5266D6621BF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31E735F3-8BF5-4773-8D07-5266D6621BF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31E735F3-8BF5-4773-8D07-5266D6621BF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D170DC3A-FDB8-4C09-AE67-A3EFBE58EAAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D170DC3A-FDB8-4C09-AE67-A3EFBE58EAAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D170DC3A-FDB8-4C09-AE67-A3EFBE58EAAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D170DC3A-FDB8-4C09-AE67-A3EFBE58EAAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
