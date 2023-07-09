@@ -56,32 +56,32 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(14, 48);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(117, 15);
+            this.label2.Size = new System.Drawing.Size(48, 15);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Version: 1.0.20230509";
+            this.label2.Text = "Version:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(14, 73);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(191, 15);
+            this.label3.Size = new System.Drawing.Size(209, 15);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Project Build: 2023/5/8 (China CST)";
+            this.label3.Text = "项目构建时间：2023/5/8 (China CST)";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(14, 97);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(93, 15);
+            this.label4.Size = new System.Drawing.Size(80, 15);
             this.label4.TabIndex = 3;
-            this.label4.Text = "License: GPL-3.0";
+            this.label4.Text = "许可: GPL-3.0";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Yave.Properties.Resources.yave_1;
-            this.pictureBox1.Location = new System.Drawing.Point(220, 9);
+            this.pictureBox1.Location = new System.Drawing.Point(224, 9);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(29, 67);
             this.pictureBox1.TabIndex = 4;

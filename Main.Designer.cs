@@ -42,11 +42,13 @@
             this.eXPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dashboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CoinsStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.upgradebutton = new System.Windows.Forms.Button();
             this.xplabel = new System.Windows.Forms.Label();
             this.levellabel = new System.Windows.Forms.Label();
             this.charNamelabel = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tourTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button8 = new System.Windows.Forms.Button();
@@ -115,11 +117,12 @@
             this.rewardResults = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.CoinsStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.更改名字ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -130,7 +133,7 @@
             this.panel3.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -233,6 +236,14 @@
             this.aboutToolStripMenuItem.Text = "关于";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // CoinsStatus
+            // 
+            this.CoinsStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.CoinsStatus.Image = global::Yave.Properties.Resources.spr_coin_0;
+            this.CoinsStatus.Name = "CoinsStatus";
+            this.CoinsStatus.Size = new System.Drawing.Size(41, 20);
+            this.CoinsStatus.Text = "0";
+            // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -278,12 +289,22 @@
             // charNamelabel
             // 
             this.charNamelabel.AutoSize = true;
+            this.charNamelabel.ContextMenuStrip = this.contextMenuStrip1;
             this.charNamelabel.Location = new System.Drawing.Point(40, 3);
             this.charNamelabel.Name = "charNamelabel";
             this.charNamelabel.Size = new System.Drawing.Size(58, 15);
             this.charNamelabel.TabIndex = 1;
             this.charNamelabel.Text = "Character";
             this.charNamelabel.MouseHover += new System.EventHandler(this.Element_Details);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Yave.Properties.Resources.yave_1;
+            this.pictureBox1.Location = new System.Drawing.Point(4, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(30, 64);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // tourTimer
             // 
@@ -955,28 +976,26 @@
             this.timer2.Interval = 10;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Yave.Properties.Resources.yave_1;
-            this.pictureBox1.Location = new System.Drawing.Point(4, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(30, 64);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // CoinsStatus
-            // 
-            this.CoinsStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.CoinsStatus.Image = global::Yave.Properties.Resources.spr_coin_0;
-            this.CoinsStatus.Name = "CoinsStatus";
-            this.CoinsStatus.Size = new System.Drawing.Size(41, 20);
-            this.CoinsStatus.Text = "0";
-            // 
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             this.openFileDialog1.Filter = "Yave\'s Tours 存档文件|*.yts";
             this.openFileDialog1.Title = "读取 Yave\'s Tours 存档...";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.更改名字ToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            // 
+            // 更改名字ToolStripMenuItem
+            // 
+            this.更改名字ToolStripMenuItem.Name = "更改名字ToolStripMenuItem";
+            this.更改名字ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.更改名字ToolStripMenuItem.Text = "更改名字...";
+            this.更改名字ToolStripMenuItem.Click += new System.EventHandler(this.更改名字ToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -1003,6 +1022,7 @@
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -1020,7 +1040,7 @@
             this.groupBox5.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1116,6 +1136,8 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem 更改名字ToolStripMenuItem;
     }
 }
 

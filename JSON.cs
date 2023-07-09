@@ -42,5 +42,13 @@ namespace Yave
             public int ID;
             public int level;
         };
+        /*
+        public struct Buff
+        {
+            public bool isRelative;
+            public int ID;
+            public double values;
+        };
+        */
     }
 }

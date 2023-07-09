@@ -143,6 +143,16 @@ namespace Yave.Properties {
         /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
+        internal static System.Drawing.Bitmap Yave_Splash {
+            get {
+                object obj = ResourceManager.GetObject("Yave_Splash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找 System.Drawing.Bitmap 类型的本地化资源。
+        /// </summary>
         internal static System.Drawing.Bitmap YaveYuFamily {
             get {
                 object obj = ResourceManager.GetObject("YaveYuFamily", resourceCulture);

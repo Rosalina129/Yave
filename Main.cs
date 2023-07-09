@@ -41,7 +41,8 @@ namespace Yave
 
         public static Character character = new Character();
         MonsterPool monsterpool = new MonsterPool(Difficult);
-        PlayerSkillPool skillPool = new PlayerSkillPool();
+        PlayerSkillPool playerSkillPool = new PlayerSkillPool();
+        MonsterSkillPool monsterSkillPool = new MonsterSkillPool();
         Monster monster;
         Random random = new Random();
 
@@ -155,6 +156,8 @@ namespace Yave
         private void Form1_Load(object sender, EventArgs e)
         {
             monster = monsterpool.GetMonster(0);
+            Splash splash = new Splash();
+            splash.ShowDialog();
             TitleScreen titleScreen = new TitleScreen();
             titleScreen.ShowDialog();
             if (!TitleScreen.isCreated && !TitleScreen.isLoaded)
@@ -165,7 +168,6 @@ namespace Yave
             {
                 if (TitleScreen.isCreated)
                 {
-                    //MessageBox.Show(FileName);
                     NewSaveInit();
                 }
                 if (TitleScreen.isLoaded)
@@ -193,6 +195,7 @@ namespace Yave
             }
             if (!character.isAlive)
             {
+                monsterSkillsListBox.Items.Clear();
                 rewardResults.Text = $"你已倒下，已自动退回开始的地方。";
                 isTouring = false;
                 isBattle = false;
@@ -571,6 +574,15 @@ namespace Yave
             {
                 FileName = openFileDialog1.FileName;
                 LoadData();
+            }
+        }
+
+        private void 更改名字ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeName changeName = new ChangeName();
+            if (changeName.ShowDialog() == DialogResult.OK)
+            {
+                character.Name = ChangeName.CName;
             }
         }
     }

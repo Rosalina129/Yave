@@ -30,7 +30,7 @@ namespace Yave
 
         private void About_Load(object sender, EventArgs e)
         {
-            label2.Text = $"Version: {Main.SoftwareVersion[0]}.{Main.SoftwareVersion[1]}.{Main.SoftwareVersion[2]}";
+            label2.Text = $"版本: {Main.SoftwareVersion[0]}.{Main.SoftwareVersion[1]}.{Main.SoftwareVersion[2]} (Beta 1)";
         }
     }
 }

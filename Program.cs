@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Yave.Skill;
-using Yave.Buff;
 using YaveDBLib;
 using System.Diagnostics;
 
@@ -80,6 +79,8 @@ namespace Yave
         public double Crit_Damage { get; set; }
         public int ElementID { get; set; }
         public ElementsPrep EPrep { get; set; }
+        public double Shield { get; set; }
+        public double ShieldMulti { get; set; }
         public List<Buff.Buff> Buffs { get; set; }
 
         //Prop
@@ -100,6 +101,8 @@ namespace Yave
         /// <param name="target">目标，真为 Monster，假为 Player</param>
         /// <param name="log">输出的日志文本</param>
         public abstract double UseSkill(int ID, Character player, Monster monster, out string log);
+        public abstract void AddBuff(Buff.Buff buff);
+        public abstract void RemoveBuff(int buffIndex);
     }
     // Character Class Start
     public class Character : Entity
@@ -115,9 +118,7 @@ namespace Yave
         public double XPBoost { get; set; }
         public double CoinsBoost { get; set; }
         public double SkillCost { get; set; }
-        public double Shield { get; set; }
-        public double ShieldMulti { get; set; }
-        public List<Skill.PlayerSkill> Skill { get; set; } = new List<Skill.PlayerSkill>();
+        public List<PlayerSkill> Skill { get; set; } = new List<PlayerSkill>();
 
         public Character()
         {
@@ -131,7 +132,7 @@ namespace Yave
             XP = 0;
             MaxXP = 50 + ValueData.Upgrade.Need[0];
             ElementID = 0;
-            Skill = new List<Skill.PlayerSkill>();
+            Skill = new List<PlayerSkill>();
             Buffs = new List<Buff.Buff>();
             isAlive = true;
 
@@ -256,19 +257,19 @@ namespace Yave
         //Control Functions
         public void AddHealth(double hp)
         {
-            Health+= hp;
+            Health += hp;
             CheckHealth();
         }
 
-        public void AddBuff(Buff.Buff buff)
+        public override void AddBuff(Buff.Buff buff)
         {
             this.Buffs.Add(buff);
             Sync();
         }
 
-        public void RemoveBuff(int a)
+        public override void RemoveBuff(int buffIndex)
         {
-            this.Buffs.Remove(this.Buffs[a]);
+            this.Buffs.Remove(this.Buffs[buffIndex]);
             Sync();
         }
 
@@ -521,6 +522,56 @@ namespace Yave
             CheckHealth();
         }
 
+        public override void AddBuff(Buff.Buff buff)
+        {
+            this.Buffs.Add(buff);
+            Sync();
+        }
+
+        public override void RemoveBuff(int buffIndex)
+        {
+            this.Buffs.Remove(this.Buffs[buffIndex]);
+            Sync();
+        }
+
+        public void SyncBuffPer()
+        {
+            for (int i = 0; i < this.Buffs.Count; i++)
+            {
+                this.Buffs[i].Cycles--;
+                if (this.Buffs[i].Cycles == 0)
+                {
+                    RemoveBuff(i);
+                }
+            }
+            Sync();
+        }
+
+        public void Sync()
+        {
+            int length = Buff.Buff.buffType.Length;
+            // Base Health, ATK, DEF, CritRate, CritDamage.
+            double[] relativePercent = new double[length];
+            for (int i = 0; i < relativePercent.Length; i++)
+            {
+                relativePercent[i] = 1.0;
+            }
+            double[] absoluteValues = new double[length];
+            foreach (var a in this.Buffs)
+            {
+                if (a.Relative)
+                {
+                    relativePercent[a.ID] += a.Values;
+                }
+                absoluteValues[a.ID] += a.Values;
+            }
+            this.MaxHealth = this.baseMaxHealth * (relativePercent[0]) + absoluteValues[0];
+            this.Attack = this.baseAttack * (relativePercent[1]) + absoluteValues[1];
+            this.Defense = this.baseDefense * (relativePercent[2]) + absoluteValues[2];
+            this.Crit_Rate = this.baseCritRate * (relativePercent[3]) + absoluteValues[3];
+            this.Crit_Damage = this.baseCritDamage * (relativePercent[4]) + absoluteValues[4];
+        }
+
         public double TakeElementDamage(double ATKValue, double critRate, double critDamage, int elementA, int elementB)
         {
             double a = Math.Round(ThreadSystem.CalculateDamage(ATKValue, Defense, critRate, critDamage, Resistance,elementA,elementB), 0);
@@ -769,6 +820,25 @@ namespace Yave
                         MonsterSkillPool.GetSkill(),
                         MonsterSkillPool.GetSkill(3),
                         MonsterSkillPool.GetSkill(6)
+                    },
+                    new Reward
+                    {
+                        Coins = 7,
+                        XP = 17
+                    }
+                ),
+                new Monster(
+                    "King Slime",
+                    ThreadSystem.Difficulty_Control(6250,Difficulty),
+                    ThreadSystem.Difficulty_Control(158,Difficulty),
+                    ThreadSystem.Difficulty_Control(16,Difficulty),
+                    0,
+                    (int)ElementName.Grass,
+                    new List<MonsterSkill>
+                    {
+                        MonsterSkillPool.GetSkill(),
+                        MonsterSkillPool.GetSkill(13),
+                        MonsterSkillPool.GetSkill(14)
                     },
                     new Reward
                     {

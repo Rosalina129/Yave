@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Yave.Buff;
 
 namespace Yave
 {
@@ -92,6 +93,7 @@ namespace Yave
         private void button4_Click(object sender, EventArgs e)
         {
             ch.SyncBuffPer();
+            SyncBuff();
         }
     }
 }
